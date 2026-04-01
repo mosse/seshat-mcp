@@ -1,0 +1,23 @@
+[project]
+name = "seshat-etl"
+version = "0.1.0"
+description = "ETL pipeline for ingesting Seshat Global History Databank into Supabase"
+requires-python = ">=3.11"
+dependencies = [
+  "supabase>=2.13.0",
+  "pandas>=2.2.0",
+  "geopandas>=1.0.0",
+  "shapely>=2.0.0",
+  "python-dotenv>=1.0.0",
+  "thefuzz[speedup]>=0.22.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-cov>=6.0.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
