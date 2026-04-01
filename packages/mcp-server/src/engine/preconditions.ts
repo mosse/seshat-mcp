@@ -28,13 +28,18 @@ interface PreconditionCheckResult {
   blocks?: boolean;
 }
 
+/**
+ * Earliest plausible year for each technology (in our year convention:
+ * positive = CE, negative = BCE). Technologies injected before these
+ * dates are flagged as anachronistic.
+ */
 const ANACHRONISM_LIMITS: Record<string, number> = {
-  Handheld_firearm: -1200,  // Earliest plausible: 1200 CE → stored as 1200
-  Gunpowder: -850,          // Earliest plausible: ~850 CE (Chinese invention)
-  Gunpowder_siege_artillery: -1300,
-  Plate_armor: -800,
-  Paper_currency: -600,
-  Crossbow: -700,
+  Handheld_firearm: 1200,    // Earliest plausible: ~1200 CE
+  Gunpowder: 850,            // Earliest plausible: ~850 CE (Chinese invention)
+  Gunpowder_siege_artillery: 1300,
+  Plate_armor: 800,
+  Paper_currency: 600,
+  Crossbow: -700,            // ~700 BCE (China)
 };
 
 const PREREQUISITE_MAP: Record<string, string[]> = {
