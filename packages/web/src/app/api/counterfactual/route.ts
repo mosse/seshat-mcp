@@ -10,9 +10,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { streamNarrative } from '@/lib/narrative';
-import { projectForward } from '@seshat/mcp-server/src/engine/model';
-import { checkPreconditions } from '@seshat/mcp-server/src/engine/preconditions';
-import { getScenarioById, SCENARIOS } from '@seshat/shared';
+import { projectForward, checkPreconditions, getScenarioById } from '@seshat/shared';
 import type {
   CenturyState,
   ComplexityScore,

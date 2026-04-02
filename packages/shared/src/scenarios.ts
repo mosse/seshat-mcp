@@ -6,7 +6,7 @@
  * Each includes real historical context to ground the counterfactual.
  */
 
-import type { Scenario } from '@seshat/shared';
+import type { Scenario } from './types.js';
 
 export const SCENARIOS: Scenario[] = [
   {
