@@ -34,7 +34,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: pnpm
 
       - name: Install dependencies
@@ -67,7 +67,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: pnpm
 
       - name: Install dependencies
@@ -86,9 +86,19 @@ jobs:
           printf '$nrconf{restart} = "a";\n' | sudo tee /etc/needrestart/conf.d/zzz-ci-noprompt.conf
 
       # Desktop Chrome (chromium) + mobile (iPhone 14 → webkit); --with-deps
-      # installs the Linux system libraries WebKit needs.
+      # installs the Linux system libraries WebKit needs. Wrapped in timeout+retry:
+      # Playwright's downloader can silently stall on a hung connection, so kill a
+      # stuck attempt and retry with a fresh one rather than sitting until the cap.
       - name: Install Playwright browsers
-        run: pnpm --filter web exec playwright install --with-deps chromium webkit
+        run: |
+          for attempt in 1 2 3; do
+            echo "::group::Playwright install (attempt $attempt)"
+            if timeout 300 pnpm --filter web exec playwright install --with-deps chromium webkit; then
+              echo "::endgroup::"; exit 0
+            fi
+            echo "::endgroup::"; echo "attempt $attempt stalled or failed — retrying"; sleep 5
+          done
+          echo "Playwright browser install failed after 3 attempts"; exit 1
 
       # The Playwright config boots its own dev server; CI=true enables retries
       # and a single worker.
