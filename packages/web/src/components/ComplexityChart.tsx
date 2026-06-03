@@ -73,13 +73,13 @@ export function ComplexityChart({
               borderRadius: '8px',
               fontSize: '13px',
             }}
-            formatter={(value: number, name: string) => [
-              value.toFixed(2),
+            formatter={(value, name) => [
+              Number(value).toFixed(2),
               name === 'baseline'
                 ? 'Historical'
                 : name === 'counterfactual'
                   ? 'Counterfactual'
-                  : name,
+                  : String(name),
             ]}
             labelFormatter={(label) => `Century: ${label}`}
           />
