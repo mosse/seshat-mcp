@@ -1,6 +1,6 @@
 # Seshat — Echoes of History
 
-Ask counterfactual questions of the historical record. Seshat turns the [Seshat Global History Databank](https://seshatdatabank.info) into something you can *interrogate* — both programmatically through an MCP server and visually through a web app — and then project what *might* have happened if history had gone differently.
+Ask counterfactual questions of the historical record. Seshat turns the [Seshat Global History Databank](https://seshat-db.com/) into something you can *interrogate* — both programmatically through an MCP server and visually through a web app — and then project what *might* have happened if history had gone differently.
 
 > *"What if the Roman Empire had developed gunpowder weapons in 200 BCE? How might its social complexity have evolved?"*
 
@@ -10,6 +10,22 @@ This monorepo has two front doors:
 - **🌍 Echoes of History web app** — a Next.js app for picking a civilisation, injecting a hypothetical change, and watching a forward-projected complexity trajectory with confidence bands.
 
 Both are powered by the same estimation engine, which lives in the shared package.
+
+## About the Seshat Global History Databank
+
+This project is built on top of [**Seshat**](https://seshat-db.com/) — it does not generate historical data, it makes Seshat's data queryable and projectable.
+
+Seshat (named after the ancient Egyptian goddess of wisdom and record-keeping) is a research databank founded in 2011 that systematically documents the social and political organisation of human societies across history. It calls itself "the most current and comprehensive body of knowledge about human history," structured so that the past can be studied with established scientific techniques. The databank is maintained by an international team of historians, social scientists, and data scientists, and underpins peer-reviewed research into the long-run evolution of social complexity.
+
+Its scope is what makes counterfactual projection possible:
+
+- **864 polities** (political societies) across **47 regions** grouped into **10 macro-regions** spanning Africa, Europe, Asia, the Americas, and Oceania
+- Coverage from roughly **3550 BCE to the modern era**
+- **77 social-complexity variables** (territory, population, settlement hierarchies, infrastructure, information systems, money) — the basis for the PC1 composite complexity score
+- **49 warfare variables** (military technology, fortifications, conflict patterns)
+- **26 general variables** (capitals, languages, religions, degree of centralisation)
+
+Learn more or explore the source data at **[seshat-db.com](https://seshat-db.com/)**. See [Data provenance](#data-provenance) below for the specific datasets and licensing this project relies on.
 
 ## Repository structure
 
