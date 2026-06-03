@@ -8,6 +8,9 @@
    ============================================================ */
 
 @theme {
+  /* Extra-small breakpoint for compacting the nav wordmark on phones */
+  --breakpoint-xs: 30rem;
+
   /* Warm ink base — never pure black, always a touch of umber */
   --color-ink-950: #0a0908;
   --color-ink-900: #100e0b;

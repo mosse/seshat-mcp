@@ -1,3 +1,5 @@
+import { CodeBlock } from '@/components/CodeBlock';
+
 export default function ResearchPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
@@ -19,26 +21,27 @@ export default function ResearchPage() {
         <p>
           Clone the repository and run the MCP server locally:
         </p>
-        <pre>
-          <code>{`git clone https://github.com/your-org/seshat-mcp
+        <CodeBlock
+          label="bash"
+          code={`git clone https://github.com/your-org/seshat-mcp
 cd seshat-mcp/packages/mcp-server
 cp .env.example .env  # Add your Supabase credentials
 pnpm install
-pnpm dev`}</code>
-        </pre>
+pnpm dev`}
+        />
         <p>
           Or connect to the hosted endpoint (when available):
         </p>
-        <pre>
-          <code>{`# In your Claude Desktop config:
-{
+        <CodeBlock
+          label="claude_desktop_config.json"
+          code={`{
   "mcpServers": {
     "seshat": {
       "url": "https://seshat-mcp.railway.app/sse"
     }
   }
-}`}</code>
-        </pre>
+}`}
+        />
 
         <h2>Available tools</h2>
         <table>
@@ -102,13 +105,14 @@ pnpm dev`}</code>
           If you use this tool in your research, please cite both the Seshat
           dataset and the Turchin et al. (2022) model:
         </p>
-        <pre>
-          <code>{`Turchin, P., et al. (2015). Seshat: The Global History Databank.
+        <CodeBlock
+          label="citation"
+          code={`Turchin, P., et al. (2015). Seshat: The Global History Databank.
   Cliodynamics 6(1).
 
 Turchin, P., et al. (2022). Disentangling the evolutionary
-  drivers of social complexity. Science Advances.`}</code>
-        </pre>
+  drivers of social complexity. Science Advances.`}
+        />
 
         <h2>License</h2>
         <p>

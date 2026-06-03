@@ -21,24 +21,26 @@ export function SiteNav() {
         <div className="flex h-16 items-center justify-between">
           <Link
             href="/"
-            className="group flex items-baseline gap-2.5"
+            className="group flex shrink-0 items-baseline gap-2.5"
             aria-label="Echoes of History — home"
           >
             <span
               aria-hidden="true"
-              className="text-brass-400 text-lg transition-transform duration-500 group-hover:rotate-180"
+              className="text-lg text-brass-400 transition-transform duration-500 group-hover:rotate-180"
             >
               ☉
             </span>
             <span className="font-display text-lg font-semibold tracking-tight text-parchment">
-              Echoes of History
+              {/* Full wordmark on larger screens, compact on the smallest */}
+              <span className="hidden xs:inline">Echoes of History</span>
+              <span className="xs:hidden">Echoes</span>
             </span>
-            <span className="hidden font-mono text-[0.62rem] uppercase tracking-[0.2em] text-parchment-faint sm:inline">
+            <span className="hidden font-mono text-[0.62rem] uppercase tracking-[0.2em] text-parchment-faint md:inline">
               Seshat Explorer
             </span>
           </Link>
 
-          <div className="flex items-center gap-1 text-sm">
+          <div className="flex items-center gap-0.5 text-sm sm:gap-1">
             {LINKS.map((link) => {
               const active =
                 pathname === link.href || pathname.startsWith(link.href + '/');
