@@ -77,6 +77,14 @@ jobs:
       - name: Build shared
         run: pnpm --filter @seshat/shared build
 
+      # `playwright install --with-deps` runs `sudo apt-get`, and sudo strips our
+      # env — so the noninteractive vars don't reach apt and Ubuntu 24.04's
+      # needrestart prompt hangs it. Neutralise needrestart at the system level.
+      - name: Disable needrestart prompts
+        run: |
+          sudo mkdir -p /etc/needrestart/conf.d
+          printf '$nrconf{restart} = "a";\n' | sudo tee /etc/needrestart/conf.d/zzz-ci-noprompt.conf
+
       # Desktop Chrome (chromium) + mobile (iPhone 14 → webkit); --with-deps
       # installs the Linux system libraries WebKit needs.
       - name: Install Playwright browsers
