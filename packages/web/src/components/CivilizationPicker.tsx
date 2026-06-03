@@ -37,62 +37,109 @@ export function CivilizationPicker() {
     return () => clearTimeout(timer);
   }, [search]);
 
+  const hasQuery = Boolean(query || region);
+
   return (
     <div>
-      <div className="flex flex-col sm:flex-row gap-3 mb-8">
-        <input
-          type="text"
-          placeholder="Search by name (e.g. Roman, Maya, Han)..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="flex-1 rounded-lg border border-stone-300 px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-stone-400"
-        />
-        <select
-          value={region}
-          onChange={(e) => setRegion(e.target.value as Region | '')}
-          className="rounded-lg border border-stone-300 px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-stone-400"
-        >
-          <option value="">All regions</option>
-          {REGIONS.map((r) => (
-            <option key={r} value={r}>
-              {r}
-            </option>
-          ))}
-        </select>
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="relative flex-1">
+          <label htmlFor="polity-search" className="sr-only">
+            Search civilisations by name
+          </label>
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-parchment-faint"
+          >
+            ⌕
+          </span>
+          <input
+            id="polity-search"
+            type="text"
+            placeholder="Search by name (e.g. Roman, Maya, Han)..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full rounded-xl border border-rule bg-ink-850 py-3 pl-11 pr-4 text-sm text-parchment placeholder:text-parchment-faint transition-colors hover:border-rule-strong focus:border-brass-500"
+          />
+        </div>
+        <div className="sm:w-64">
+          <label htmlFor="region-filter" className="sr-only">
+            Filter by region
+          </label>
+          <select
+            id="region-filter"
+            aria-label="Filter by region"
+            value={region}
+            onChange={(e) => setRegion(e.target.value as Region | '')}
+            className="w-full rounded-xl border border-rule bg-ink-850 px-4 py-3 text-sm text-parchment transition-colors hover:border-rule-strong focus:border-brass-500"
+          >
+            <option value="">All regions</option>
+            {REGIONS.map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
+      {/* status region for assistive tech */}
+      <p aria-live="polite" className="sr-only">
+        {loading
+          ? 'Searching'
+          : polities.length > 0
+            ? `${polities.length} of ${totalCount} results`
+            : ''}
+      </p>
+
       {loading && (
-        <div className="text-center text-stone-500 py-8">Searching...</div>
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className="panel h-28 animate-pulse"
+              style={{ animationDelay: `${i * 60}ms` }}
+            />
+          ))}
+        </div>
       )}
 
       {!loading && polities.length === 0 && (
-        <div className="text-center text-stone-500 py-8">
-          {query || region
-            ? 'No polities found. Try a different search.'
-            : 'Enter a search term or select a region to get started.'}
+        <div className="mt-12 rounded-2xl border border-dashed border-rule px-6 py-16 text-center">
+          <p className="font-display text-xl text-parchment">
+            {hasQuery
+              ? 'No polities found. Try a different search.'
+              : 'Enter a search term or select a region to get started.'}
+          </p>
+          {!hasQuery && (
+            <p className="mt-2 text-sm text-parchment-faint">
+              Try “Roman”, “Maya”, “Han”, or pick a region from the filter.
+            </p>
+          )}
         </div>
       )}
 
       {!loading && polities.length > 0 && (
         <>
-          <p className="text-sm text-stone-500 mb-4">
+          <p className="mb-4 mt-8 font-mono text-xs uppercase tracking-[0.18em] text-parchment-faint">
             Showing {polities.length} of {totalCount} results
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {polities.map((p) => (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {polities.map((p, i) => (
               <Link
                 key={p.id}
                 href={`/explore/${p.id}`}
-                className="block rounded-xl border border-stone-200 bg-white p-5 hover:border-stone-400 hover:shadow-sm transition-all"
+                className={`reveal reveal-${(i % 8) + 1} panel group p-5 transition-all duration-300 hover:-translate-y-1 hover:border-brass-600/70`}
               >
-                <h3 className="font-semibold text-stone-900">{p.name}</h3>
-                <p className="text-sm text-stone-500 mt-1">
-                  {p.region} &middot; {formatYear(p.start_year)} &ndash;{' '}
-                  {formatYear(p.end_year)}
+                <h3 className="font-display text-lg font-semibold text-parchment transition-colors group-hover:text-brass-300">
+                  {p.name}
+                </h3>
+                <p className="mt-2 font-mono text-xs text-parchment-dim">
+                  {formatYear(p.start_year)} — {formatYear(p.end_year)}
                 </p>
-                {p.nga && (
-                  <p className="text-xs text-stone-400 mt-1">NGA: {p.nga}</p>
-                )}
+                <p className="mt-1 text-xs text-parchment-faint">
+                  {p.region}
+                  {p.nga ? ` · ${p.nga}` : ''}
+                </p>
               </Link>
             ))}
           </div>

@@ -21,13 +21,19 @@ interface ComplexityChartProps {
   animated?: boolean;
 }
 
+// Palette tied to the ink/brass/patina theme
+const PATINA = '#5fbda9'; // historical baseline
+const BRASS = '#e6bd74'; // counterfactual
+const MASK = '#15120d'; // ink-850, masks the inner confidence band
+const GRID = 'rgba(236,228,211,0.08)';
+const AXIS = '#8d8474';
+
 export function ComplexityChart({
   baseline,
   counterfactual,
   confidenceBands,
   animated = true,
 }: ComplexityChartProps) {
-  // Merge all data by century for Recharts
   const data = baseline.map((b, i) => {
     const cf = counterfactual?.[i];
     const band = confidenceBands?.[i];
@@ -43,36 +49,59 @@ export function ComplexityChart({
     };
   });
 
+  // Text alternative for assistive technology
+  const first = baseline[0];
+  const last = baseline[baseline.length - 1];
+  const ariaLabel = counterfactual
+    ? `Line chart comparing the historical social-complexity trajectory against the counterfactual projection across ${baseline.length} centuries, with a shaded confidence interval that widens over time.`
+    : `Line chart of the social-complexity trajectory across ${baseline.length} centuries, from ${first?.pc1_composite.toFixed(
+        2
+      )} to ${last?.pc1_composite.toFixed(2)}.`;
+
   return (
-    <div className="w-full h-80">
+    <div className="h-80 w-full" role="img" aria-label={ariaLabel}>
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart
           data={data}
-          margin={{ top: 10, right: 30, left: 10, bottom: 10 }}
+          margin={{ top: 10, right: 24, left: 4, bottom: 4 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#e7e5e4" />
+          <defs>
+            <linearGradient id="bandGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={BRASS} stopOpacity={0.22} />
+              <stop offset="100%" stopColor={BRASS} stopOpacity={0.04} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="2 4" stroke={GRID} vertical={false} />
           <XAxis
             dataKey="centuryLabel"
-            tick={{ fontSize: 12, fill: '#78716c' }}
+            tick={{ fontSize: 11, fill: AXIS, fontFamily: 'var(--font-mono)' }}
             tickLine={false}
+            axisLine={{ stroke: GRID }}
           />
           <YAxis
-            tick={{ fontSize: 12, fill: '#78716c' }}
+            tick={{ fontSize: 11, fill: AXIS, fontFamily: 'var(--font-mono)' }}
             tickLine={false}
+            axisLine={false}
+            width={48}
             label={{
-              value: 'Social complexity index',
+              value: 'Complexity index',
               angle: -90,
               position: 'insideLeft',
-              style: { fontSize: 12, fill: '#78716c' },
+              style: { fontSize: 11, fill: AXIS, textAnchor: 'middle' },
             }}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#fff',
-              border: '1px solid #d6d3d1',
-              borderRadius: '8px',
+              backgroundColor: '#1c1812',
+              border: '1px solid rgba(236,228,211,0.18)',
+              borderRadius: '10px',
               fontSize: '13px',
+              color: '#ece4d3',
+              boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
             }}
+            labelStyle={{ color: '#8d8474', fontFamily: 'var(--font-mono)' }}
+            itemStyle={{ color: '#ece4d3' }}
+            cursor={{ stroke: 'rgba(236,228,211,0.2)' }}
             formatter={(value, name) => [
               Number(value).toFixed(2),
               name === 'baseline'
@@ -84,23 +113,24 @@ export function ComplexityChart({
             labelFormatter={(label) => `Century: ${label}`}
           />
           <Legend
-            wrapperStyle={{ fontSize: '13px' }}
-            formatter={(value) =>
-              value === 'baseline'
-                ? 'Historical'
-                : value === 'counterfactual'
-                  ? 'Counterfactual'
-                  : value
-            }
+            wrapperStyle={{ fontSize: '12px', color: AXIS }}
+            formatter={(value) => (
+              <span style={{ color: '#b9b0a0' }}>
+                {value === 'baseline'
+                  ? 'Historical'
+                  : value === 'counterfactual'
+                    ? 'Counterfactual'
+                    : value}
+              </span>
+            )}
           />
 
-          {/* Confidence band (p5–p95) */}
+          {/* Outer confidence band (p5–p95) */}
           {confidenceBands && (
             <Area
               dataKey="bandHigh"
               stroke="none"
-              fill="#2563eb"
-              fillOpacity={0.08}
+              fill="url(#bandGrad)"
               isAnimationActive={animated}
               name="95% confidence"
               legendType="none"
@@ -110,7 +140,7 @@ export function ComplexityChart({
             <Area
               dataKey="bandLow"
               stroke="none"
-              fill="#fff"
+              fill={MASK}
               fillOpacity={1}
               isAnimationActive={false}
               legendType="none"
@@ -122,8 +152,8 @@ export function ComplexityChart({
             <Area
               dataKey="band75"
               stroke="none"
-              fill="#2563eb"
-              fillOpacity={0.12}
+              fill={BRASS}
+              fillOpacity={0.16}
               isAnimationActive={animated}
               name="50% confidence"
               legendType="none"
@@ -133,32 +163,32 @@ export function ComplexityChart({
             <Area
               dataKey="band25"
               stroke="none"
-              fill="#fff"
+              fill={MASK}
               fillOpacity={1}
               isAnimationActive={false}
               legendType="none"
             />
           )}
 
-          {/* Baseline line */}
+          {/* Historical baseline */}
           <Line
             type="monotone"
             dataKey="baseline"
-            stroke="#374151"
-            strokeWidth={2}
+            stroke={PATINA}
+            strokeWidth={2.5}
             dot={false}
             isAnimationActive={animated}
             animationDuration={1500}
           />
 
-          {/* Counterfactual line */}
+          {/* Counterfactual */}
           {counterfactual && (
             <Line
               type="monotone"
               dataKey="counterfactual"
-              stroke="#2563eb"
-              strokeWidth={2}
-              strokeDasharray="8 4"
+              stroke={BRASS}
+              strokeWidth={2.5}
+              strokeDasharray="7 5"
               dot={false}
               isAnimationActive={animated}
               animationDuration={2000}

@@ -32,11 +32,11 @@ export default async function PolityDetailPage({
 
   if (!polity) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold text-stone-900 mb-4">
+      <div className="mx-auto max-w-4xl px-4 py-24 text-center">
+        <h1 className="mb-4 font-display text-3xl font-semibold text-parchment">
           Polity not found
         </h1>
-        <p className="text-stone-600">
+        <p className="text-parchment-dim">
           No polity found with ID &ldquo;{polityId}&rdquo;.
         </p>
       </div>
@@ -46,32 +46,34 @@ export default async function PolityDetailPage({
   const timelinePoints = toProjectionPoints(polity.complexity_timeline);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
-      <div className="mb-10">
-        <h1 className="text-3xl font-bold text-stone-900">{polity.name}</h1>
-        <p className="text-stone-600 mt-1">
-          {polity.region} &middot; {formatYear(polity.start_year)} &ndash;{' '}
-          {formatYear(polity.end_year)}
+    <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="reveal reveal-1 mb-12">
+        <p className="kicker mb-3">{polity.region}</p>
+        <h1 className="font-display text-4xl font-semibold tracking-tight text-parchment sm:text-5xl">
+          {polity.name}
+        </h1>
+        <p className="mt-3 font-mono text-sm text-parchment-dim">
+          {formatYear(polity.start_year)} — {formatYear(polity.end_year)}
           {polity.capital ? ` · Capital: ${polity.capital}` : ''}
         </p>
       </div>
 
       {timelinePoints.length > 0 && (
-        <div className="mb-12">
-          <h2 className="text-lg font-semibold text-stone-900 mb-4">
+        <div className="reveal reveal-2 mb-14">
+          <h2 className="mb-4 font-display text-2xl font-semibold text-parchment">
             Complexity timeline
           </h2>
-          <div className="rounded-xl border border-stone-200 bg-white p-6">
+          <div className="panel p-6">
             <ComplexityChart baseline={timelinePoints} animated={false} />
           </div>
         </div>
       )}
 
-      <div>
-        <h2 className="text-lg font-semibold text-stone-900 mb-4">
-          What if...?
+      <div className="reveal reveal-3">
+        <h2 className="mb-2 font-display text-2xl font-semibold text-parchment">
+          What if…?
         </h2>
-        <p className="text-stone-600 mb-6">
+        <p className="mb-6 text-parchment-dim">
           Choose a scenario to see how this civilisation might have developed
           differently.
         </p>

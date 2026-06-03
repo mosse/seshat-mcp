@@ -22,7 +22,7 @@ export function HistoryMap({
   center = [30, 30],
   zoom = 3,
   year,
-  className = 'w-full h-96 rounded-xl overflow-hidden',
+  className = 'map-shell w-full h-96 rounded-xl overflow-hidden border border-rule',
 }: HistoryMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -117,14 +117,21 @@ export function HistoryMap({
   if (mapError) {
     return (
       <div
-        className={`${className} bg-stone-100 flex items-center justify-center`}
+        className={`${className} flex items-center justify-center bg-ink-850`}
       >
-        <p className="text-sm text-stone-500">
+        <p className="text-sm text-parchment-faint">
           Map could not be loaded. Results are still available above.
         </p>
       </div>
     );
   }
 
-  return <div ref={containerRef} className={className} />;
+  return (
+    <div
+      ref={containerRef}
+      className={className}
+      role="img"
+      aria-label="Historical territory map showing polity borders for the selected year"
+    />
+  );
 }

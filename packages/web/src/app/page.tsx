@@ -6,122 +6,209 @@ const FEATURED_SCENARIOS = [
     polityId: 'mx_classic_maya',
     scenarioId: 'iron_weapons',
     year: 300,
-    color: 'bg-amber-50 border-amber-200 hover:border-amber-400',
+    tag: 'Iron weapons',
+    when: '300 CE',
+    region: 'Mesoamerica',
+    accent: 'brass' as const,
   },
   {
     question: 'What if the Roman Empire adopted the stirrup 200 years earlier?',
     polityId: 'it_roman_empire_principate',
     scenarioId: 'cavalry',
     year: 0,
-    color: 'bg-red-50 border-red-200 hover:border-red-400',
+    tag: 'Cavalry',
+    when: '1 BCE',
+    region: 'Europe',
+    accent: 'patina' as const,
   },
   {
     question: 'What if the Aztecs had cavalry?',
     polityId: 'mx_aztec_empire',
     scenarioId: 'cavalry',
     year: 1400,
-    color: 'bg-emerald-50 border-emerald-200 hover:border-emerald-400',
+    tag: 'Cavalry',
+    when: '1400 CE',
+    region: 'Mesoamerica',
+    accent: 'brass' as const,
   },
   {
     question: 'What if the Maurya Empire kept iron weapons from the Gangetic Plain?',
     polityId: 'in_maurya_empire',
     scenarioId: 'iron_weapons',
     year: -300,
-    color: 'bg-violet-50 border-violet-200 hover:border-violet-400',
+    tag: 'Iron weapons',
+    when: '300 BCE',
+    region: 'South Asia',
+    accent: 'patina' as const,
   },
   {
     question: 'What if the Inca had writing?',
     polityId: 'pe_inca_empire',
     scenarioId: 'writing_system',
     year: 1400,
-    color: 'bg-sky-50 border-sky-200 hover:border-sky-400',
+    tag: 'Writing system',
+    when: '1400 CE',
+    region: 'Andes',
+    accent: 'brass' as const,
   },
   {
     question: 'What if Sub-Saharan African kingdoms adopted cavalry in 500 CE?',
     polityId: 'gh_akan_kingdoms',
     scenarioId: 'cavalry',
     year: 500,
-    color: 'bg-orange-50 border-orange-200 hover:border-orange-400',
+    tag: 'Cavalry',
+    when: '500 CE',
+    region: 'Africa',
+    accent: 'patina' as const,
+  },
+];
+
+const STEPS = [
+  {
+    n: '01',
+    title: 'Pick a civilisation',
+    body: 'Choose from 400+ historical societies spanning 10,000 years across every inhabited continent.',
+  },
+  {
+    n: '02',
+    title: 'Inject a change',
+    body: 'Give them iron weapons, writing, cavalry, or gunpowder — and choose the century it arrives.',
+  },
+  {
+    n: '03',
+    title: 'See what changes',
+    body: 'The model projects how social complexity would diverge, grounded in patterns from comparable real societies.',
   },
 ];
 
 export default function HomePage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-      <section className="text-center mb-16">
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-stone-900 mb-4">
-          What if history had gone differently?
-        </h1>
-        <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-          Inject hypothetical changes into real civilisations and see what a
-          data-driven model predicts would have changed. Powered by the Seshat
-          Global History Databank and 400+ historical societies.
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* ---------- Hero ---------- */}
+      <section className="relative pb-20 pt-20 sm:pt-28">
+        <p className="reveal reveal-1 kicker mb-6">
+          Counterfactual history · Seshat Databank
         </p>
-        <div className="mt-8 flex justify-center gap-4">
+        <h1 className="reveal reveal-2 max-w-4xl font-display text-5xl font-semibold leading-[0.98] tracking-tight text-parchment sm:text-7xl">
+          What if history had gone{' '}
+          <em className="text-gilt not-italic">differently</em>?
+        </h1>
+        <p className="reveal reveal-3 mt-8 max-w-2xl text-lg leading-relaxed text-parchment-dim">
+          Inject a hypothetical change into a real civilisation — and watch a
+          data-driven model project how the arc of its complexity would have
+          bent. Built on the Seshat Global History Databank and 400+ historical
+          societies.
+        </p>
+        <div className="reveal reveal-4 mt-10 flex flex-wrap items-center gap-4">
           <Link
             href="/explore"
-            className="rounded-lg bg-stone-900 px-6 py-3 text-sm font-medium text-white hover:bg-stone-800 transition-colors"
+            className="group inline-flex items-center gap-2 rounded-full bg-brass-400 px-7 py-3.5 text-sm font-semibold text-ink-950 shadow-[0_0_30px_-8px_rgba(210,161,78,0.6)] transition-all hover:bg-brass-300 hover:shadow-[0_0_40px_-6px_rgba(210,161,78,0.8)]"
           >
             Start exploring
+            <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+              →
+            </span>
           </Link>
           <Link
             href="/research"
-            className="rounded-lg border border-stone-300 px-6 py-3 text-sm font-medium text-stone-700 hover:bg-stone-100 transition-colors"
+            className="rounded-full border border-rule-strong px-7 py-3.5 text-sm font-medium text-parchment-dim transition-colors hover:border-brass-600 hover:text-parchment"
           >
             For researchers
           </Link>
         </div>
+
+        {/* Time-spine motif */}
+        <div className="reveal reveal-5 mt-16 flex items-center gap-4 font-mono text-xs text-parchment-faint">
+          <span>10,000 BCE</span>
+          <div className="relative h-px flex-1 bg-rule">
+            <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brass-400 shadow-[0_0_12px_2px_rgba(210,161,78,0.6)]" />
+          </div>
+          <span>today</span>
+        </div>
       </section>
 
-      <section>
-        <h2 className="text-sm font-medium text-stone-500 uppercase tracking-wider mb-6 text-center">
-          Featured what-ifs
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {FEATURED_SCENARIOS.map((s) => (
-            <Link
-              key={s.question}
-              href={`/explore/${s.polityId}/${s.scenarioId}?year=${s.year}`}
-              className={`block rounded-xl border-2 p-6 transition-all ${s.color}`}
-            >
-              <p className="text-lg font-medium text-stone-800">
-                {s.question}
+      <hr className="rule-brass" />
+
+      {/* ---------- Featured what-ifs ---------- */}
+      <section className="py-20">
+        <div className="mb-10 flex items-end justify-between">
+          <div>
+            <p className="kicker mb-2">Featured what-ifs</p>
+            <h2 className="font-display text-3xl font-semibold text-parchment">
+              Six divergences to explore
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {FEATURED_SCENARIOS.map((s, i) => {
+            const accentText =
+              s.accent === 'brass' ? 'text-brass-400' : 'text-patina-400';
+            const accentHover =
+              s.accent === 'brass'
+                ? 'hover:border-brass-600/70'
+                : 'hover:border-patina-500/70';
+            return (
+              <Link
+                key={s.question}
+                href={`/explore/${s.polityId}/${s.scenarioId}?year=${s.year}`}
+                className={`reveal reveal-${i + 1} panel group relative flex flex-col overflow-hidden p-6 transition-all duration-300 hover:-translate-y-1 ${accentHover}`}
+              >
+                {/* index numeral */}
+                <span
+                  aria-hidden="true"
+                  className="absolute right-5 top-4 font-display text-5xl font-semibold text-ink-700 transition-colors group-hover:text-ink-600"
+                >
+                  {i + 1}
+                </span>
+                <div className="mb-4 flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-[0.18em]">
+                  <span className={accentText}>{s.tag}</span>
+                  <span className="text-parchment-faint">·</span>
+                  <span className="text-parchment-faint">{s.when}</span>
+                </div>
+                <p className="font-display text-xl font-medium leading-snug text-parchment">
+                  {s.question}
+                </p>
+                <div className="mt-auto pt-6 text-xs text-parchment-faint">
+                  {s.region}
+                  <span className={`ml-2 ${accentText} opacity-0 transition-opacity group-hover:opacity-100`}>
+                    Run projection →
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      <hr className="rule-brass" />
+
+      {/* ---------- How it works ---------- */}
+      <section className="py-20">
+        <div className="mb-12 text-center">
+          <p className="kicker mb-2">The method</p>
+          <h2 className="font-display text-3xl font-semibold text-parchment">
+            How it works
+          </h2>
+        </div>
+        <ol className="grid grid-cols-1 gap-10 md:grid-cols-3">
+          {STEPS.map((step) => (
+            <li key={step.n} className="relative">
+              <div
+                aria-hidden="true"
+                className="mb-4 font-mono text-sm text-brass-500"
+              >
+                {step.n}
+              </div>
+              <h3 className="mb-2 font-display text-xl font-semibold text-parchment">
+                {step.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-parchment-dim">
+                {step.body}
               </p>
-            </Link>
+            </li>
           ))}
-        </div>
-      </section>
-
-      <section className="mt-20 text-center">
-        <h2 className="text-2xl font-bold text-stone-900 mb-4">
-          How it works
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div>
-            <div className="text-3xl font-bold text-stone-300 mb-2">1</div>
-            <h3 className="font-semibold mb-1">Pick a civilisation</h3>
-            <p className="text-sm text-stone-600">
-              Choose from 400+ historical societies spanning 10,000 years
-              across every continent.
-            </p>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-stone-300 mb-2">2</div>
-            <h3 className="font-semibold mb-1">Inject a change</h3>
-            <p className="text-sm text-stone-600">
-              Give them iron weapons, writing, cavalry, or gunpowder.
-              Choose when the change occurs.
-            </p>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-stone-300 mb-2">3</div>
-            <h3 className="font-semibold mb-1">See what changes</h3>
-            <p className="text-sm text-stone-600">
-              The model projects how social complexity would diverge,
-              grounded in patterns from comparable real societies.
-            </p>
-          </div>
-        </div>
+        </ol>
       </section>
     </div>
   );

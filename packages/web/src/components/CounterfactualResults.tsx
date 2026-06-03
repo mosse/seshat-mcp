@@ -116,104 +116,129 @@ export function CounterfactualResults({
   }, [polity.id, scenario.id, injectionYear]);
 
   const yearLabel = formatYear(injectionYear);
+  const deltaPct = projection
+    ? `${projection.delta_complexity > 0 ? '+' : ''}${(projection.delta_complexity * 100).toFixed(0)}%`
+    : null;
+  const deltaPositive = (projection?.delta_complexity ?? 0) >= 0;
 
   return (
-    <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
+    <article className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
       {/* Section 1: The Setup */}
-      <section className="mb-12 text-center">
-        <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-2">
-          What if {polity.name} had {scenario.label.toLowerCase()} in{' '}
-          {yearLabel}?
+      <header className="reveal reveal-1 mb-16">
+        <p className="kicker mb-4">A counterfactual · {scenario.label}</p>
+        <h1 className="font-display text-4xl font-semibold leading-[1.05] tracking-tight text-parchment sm:text-5xl">
+          What if {polity.name} had{' '}
+          <em className="text-gilt not-italic">
+            {scenario.label.toLowerCase()}
+          </em>{' '}
+          in {yearLabel}?
         </h1>
-        <p className="text-stone-600">
-          {scenario.description} &middot; Projection: 5 centuries forward
+        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-parchment-dim">
+          {scenario.description} · Projected five centuries forward.
         </p>
-      </section>
+      </header>
 
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 mb-8">
-          <p className="text-red-800">{error}</p>
+        <div
+          role="alert"
+          className="mb-10 rounded-xl border border-terracotta/40 bg-terracotta/10 p-5"
+        >
+          <p className="text-terracotta">{error}</p>
         </div>
       )}
 
       {/* Section 2: The Divergence */}
       {projection && (
-        <section className="mb-12">
-          <h2 className="text-xl font-semibold text-stone-900 mb-4">
-            The Divergence
-          </h2>
-          <div className="rounded-xl border border-stone-200 bg-white p-6">
+        <section className="reveal mb-16">
+          <div className="mb-5 flex items-baseline justify-between">
+            <h2 className="font-display text-2xl font-semibold text-parchment">
+              The divergence
+            </h2>
+            {deltaPct && (
+              <span
+                className={`font-mono text-sm ${deltaPositive ? 'text-patina-300' : 'text-terracotta'}`}
+              >
+                {deltaPct} by century 5
+              </span>
+            )}
+          </div>
+          <div className="panel p-6">
             <ComplexityChart
               baseline={projection.baseline}
               counterfactual={projection.counterfactual}
               confidenceBands={projection.confidence_bands}
             />
           </div>
-          <p className="text-sm text-stone-600 mt-3 text-center">
+          <p className="mt-4 text-sm leading-relaxed text-parchment-dim">
             The model projects {polity.name} would have been{' '}
-            <span className="font-semibold">
-              {projection.delta_complexity > 0 ? '+' : ''}
-              {(projection.delta_complexity * 100).toFixed(0)}%
-            </span>{' '}
-            more complex by century 5.
-            <br />
-            <span className="text-stone-400">
-              Shaded region: 90% confidence interval (widens over time).
-            </span>
+            <span className="font-semibold text-parchment">{deltaPct}</span> more
+            complex by century 5. The shaded region is the 90% confidence
+            interval — it widens over time as uncertainty compounds.
           </p>
         </section>
       )}
 
       {/* Section 3: The Narrative */}
-      <section className="mb-12">
-        <h2 className="text-xl font-semibold text-stone-900 mb-4">
-          The Narrative
+      <section className="mb-16">
+        <h2 className="reveal mb-5 font-display text-2xl font-semibold text-parchment">
+          The narrative
         </h2>
-        <div className="rounded-xl border border-stone-200 bg-white p-8">
+        <div className="panel p-8 sm:p-10">
           {loading && !narrative && (
-            <div className="text-stone-500">
+            <div>
               {narrativeText ? (
-                <p className="whitespace-pre-wrap font-serif text-stone-700 leading-relaxed">
+                <p className="dropcap whitespace-pre-wrap font-display text-lg leading-relaxed text-parchment-dim">
                   {narrativeText}
                 </p>
               ) : (
-                <p>Generating narrative...</p>
+                <div className="flex items-center gap-3 text-parchment-faint">
+                  <span className="h-2 w-2 animate-ping rounded-full bg-brass-400" />
+                  <span className="font-mono text-sm">
+                    Consulting the model…
+                  </span>
+                </div>
               )}
             </div>
           )}
           {narrative && (
-            <div className="space-y-6 font-serif text-stone-700 leading-relaxed">
+            <div className="space-y-8 leading-relaxed text-parchment-dim">
               {narrative.headline && (
-                <p className="text-lg font-semibold text-stone-900 font-sans">
+                <p className="font-display text-2xl font-semibold leading-snug text-parchment">
                   {narrative.headline}
                 </p>
               )}
               {narrative.immediate_effects && (
                 <div>
-                  <h3 className="text-sm font-medium text-stone-500 font-sans uppercase tracking-wider mb-2">
+                  <h3 className="mb-2 font-mono text-xs uppercase tracking-[0.2em] text-brass-400">
                     What changed first
                   </h3>
-                  <p>{narrative.immediate_effects}</p>
+                  <p className="dropcap text-lg leading-relaxed">
+                    {narrative.immediate_effects}
+                  </p>
                 </div>
               )}
               {narrative.ripple_effects && (
                 <div>
-                  <h3 className="text-sm font-medium text-stone-500 font-sans uppercase tracking-wider mb-2">
+                  <h3 className="mb-2 font-mono text-xs uppercase tracking-[0.2em] text-brass-400">
                     What rippled outward
                   </h3>
-                  <p>{narrative.ripple_effects}</p>
+                  <p className="text-lg leading-relaxed">
+                    {narrative.ripple_effects}
+                  </p>
                 </div>
               )}
               {narrative.geopolitical_response && (
                 <div>
-                  <h3 className="text-sm font-medium text-stone-500 font-sans uppercase tracking-wider mb-2">
+                  <h3 className="mb-2 font-mono text-xs uppercase tracking-[0.2em] text-brass-400">
                     How neighbours responded
                   </h3>
-                  <p>{narrative.geopolitical_response}</p>
+                  <p className="text-lg leading-relaxed">
+                    {narrative.geopolitical_response}
+                  </p>
                 </div>
               )}
               {narrative.confidence_limits && (
-                <div className="border-t border-stone-100 pt-4 text-sm text-stone-500 italic">
+                <div className="border-t border-rule pt-5 text-sm italic text-parchment-faint">
                   {narrative.confidence_limits}
                 </div>
               )}
@@ -224,18 +249,18 @@ export function CounterfactualResults({
 
       {/* Section 4: Warnings/Notes */}
       {projection && projection.notes.length > 0 && (
-        <section className="mb-12">
-          <h2 className="text-xl font-semibold text-stone-900 mb-4">
+        <section className="mb-16">
+          <h2 className="mb-5 font-display text-2xl font-semibold text-parchment">
             Caveats
           </h2>
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {projection.notes.map((note, i) => (
               <li
                 key={i}
-                className="flex gap-2 text-sm text-stone-600 bg-amber-50 border border-amber-200 rounded-lg p-3"
+                className="flex gap-3 rounded-xl border border-terracotta/30 bg-terracotta/5 p-4 text-sm leading-relaxed text-parchment-dim"
               >
-                <span className="text-amber-600 font-medium shrink-0">
-                  Note:
+                <span className="shrink-0 font-mono text-xs uppercase tracking-wider text-terracotta">
+                  Note
                 </span>
                 {note}
               </li>
@@ -245,22 +270,23 @@ export function CounterfactualResults({
       )}
 
       {/* Section 5: Explore More */}
-      <section className="text-center">
-        <div className="flex flex-wrap justify-center gap-3">
+      <section>
+        <hr className="rule-brass mb-8" />
+        <div className="flex flex-wrap gap-3">
           <Link
             href={`/explore/${polity.id}`}
-            className="rounded-lg border border-stone-300 px-5 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-100 transition-colors"
+            className="rounded-full border border-rule-strong px-5 py-2.5 text-sm font-medium text-parchment-dim transition-colors hover:border-brass-600 hover:text-parchment"
           >
             Try a different scenario
           </Link>
           <Link
             href="/explore"
-            className="rounded-lg border border-stone-300 px-5 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-100 transition-colors"
+            className="rounded-full border border-rule-strong px-5 py-2.5 text-sm font-medium text-parchment-dim transition-colors hover:border-brass-600 hover:text-parchment"
           >
             Choose another civilisation
           </Link>
         </div>
       </section>
-    </div>
+    </article>
   );
 }

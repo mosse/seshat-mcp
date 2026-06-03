@@ -1,12 +1,13 @@
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-bold text-stone-900 mb-6">
+    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+      <p className="kicker mb-3">Colophon</p>
+      <h1 className="mb-8 font-display text-4xl font-semibold tracking-tight text-parchment sm:text-5xl">
         About Echoes of History
       </h1>
 
-      <div className="prose prose-stone max-w-none">
-        <p>
+      <div className="prose-echoes prose prose-lg max-w-none">
+        <p className="dropcap">
           Echoes of History is a counterfactual history explorer that lets you
           inject hypothetical changes into real civilisations and see what a
           data-driven model predicts would have changed.

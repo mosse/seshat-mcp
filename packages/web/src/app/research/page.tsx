@@ -1,11 +1,12 @@
 export default function ResearchPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-bold text-stone-900 mb-6">
+    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+      <p className="kicker mb-3">MCP server</p>
+      <h1 className="mb-8 font-display text-4xl font-semibold tracking-tight text-parchment sm:text-5xl">
         For Researchers
       </h1>
 
-      <div className="prose prose-stone max-w-none">
+      <div className="prose-echoes prose prose-lg max-w-none">
         <p>
           The Seshat MCP server exposes the Seshat Global History Databank as a
           suite of queryable tools compatible with Claude and other MCP-enabled
