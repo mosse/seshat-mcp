@@ -6,6 +6,9 @@ dist/
 .env.*.local
 *.tsbuildinfo
 coverage/
+test-results/
+playwright-report/
+playwright/.cache/
 data/etl/logs/*.log
 data/raw/
 __pycache__/
