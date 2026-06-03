@@ -293,7 +293,7 @@ function computeSimilarity(
 }
 
 function getFeatureValue(score: ComplexityScore, feature: string): number | null {
-  const val = (score as Record<string, unknown>)[feature];
+  const val = (score as unknown as Record<string, unknown>)[feature];
   return typeof val === 'number' ? val : null;
 }
 

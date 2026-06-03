@@ -13,12 +13,13 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
-    "@supabase/supabase-js": "^2.49.4",
-    "@seshat/shared": "workspace:*"
+    "@seshat/shared": "workspace:*",
+    "@supabase/supabase-js": "^2.49.4"
   },
   "devDependencies": {
-    "typescript": "^5.7.3",
+    "@types/node": "^20",
     "tsx": "^4.19.4",
+    "typescript": "^5.7.3",
     "vitest": "^3.1.1"
   }
 }

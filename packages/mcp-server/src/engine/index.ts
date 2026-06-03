@@ -107,7 +107,7 @@ export async function runCounterfactualEstimate(
   );
 
   // 5. Find analogous polities
-  let analogues = [];
+  let analogues: Awaited<ReturnType<typeof findAnalogousPolities>> = [];
   try {
     analogues = await findAnalogousPolities({
       polity_id: polityId,
