@@ -15,11 +15,16 @@ concurrency:
 # forced migration (June 2026), clearing the Node 20 deprecation warning.
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  # Stop `playwright install --with-deps` (apt-get) from hanging on Ubuntu 24.04's
+  # interactive needrestart prompt.
+  DEBIAN_FRONTEND: noninteractive
+  NEEDRESTART_MODE: a
 
 jobs:
   build-and-test:
     name: Build & unit tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -52,6 +57,7 @@ jobs:
   e2e:
     name: Web e2e (Playwright)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
