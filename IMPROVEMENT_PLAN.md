@@ -42,23 +42,18 @@ quantitative history.
 Phase 0 (honesty) → Phase 1 (academic backbone: solid local MCP + reproducibility + the real model)
 → Phase 2 (lay/educational) → Phase 3 (hosting + depth).
 
-### Sourcing the real model (de-risks SCI-1b)
+### Sourcing the real model — ✅ DONE (recorded in [`docs/MODEL.md`](docs/MODEL.md))
 
-The 2022 paper is open-access and the model is **extractable, not a black box**:
-- Paper: *Disentangling the evolutionary drivers of social complexity* (Science Advances 2022),
-  DOI [10.1126/sciadv.abn3517](https://www.science.org/doi/10.1126/sciadv.abn3517);
-  open-access mirror: [PMC9232109](https://pmc.ncbi.nlm.nih.gov/articles/PMC9232109/).
-- **Published model (Eq 2, Scale response):**
-  `Scale_{t+1} = −0.24 + 1.2·Scaleₜ − 0.04·Scaleₜ² + 0.10·Agriₜ + 0.00002·AgriLagₜ + 0.16·IronCavₜ + εₜ`
-- **Two structural gaps vs. the current code** (`model.ts`): (a) the real model is **quadratic** — it
-  has a `−0.04·Scaleₜ²` saturation term the app lacks entirely; (b) all current coefficients differ
-  from the published values (intercept, lag, IronCav, Agri, AgriLag).
-- **Per-response coefficients** (Scale / Hierarchy / Government) live in **Table S3** of the
-  supplementary materials (downloadable from science.org). The replication data deposit URL is **TBD**
-  — to confirm (likely OSF/Zenodo/Seshat); if unavailable, Eq 2 + Table S3 are enough to transcribe
-  the model directly.
-- Predictors confirmed by the paper: **IronCav** (cavalry + iron metallurgy), **MilTech** (warfare
-  intensity), **Agri** (agricultural productivity), **AgriLag** (antiquity of agriculture).
+The model was located, extracted, and documented:
+- **Deposit found:** OSF <https://osf.io/tekb6/> → linked project node `qtsza` holds the SI PDF
+  (`Evol_SPC_SI_Draft_for_print.pdf`) and the data + R scripts (`Evol_SPC_SI_Draft.zip`).
+- **Real coefficients transcribed** for all three responses (Scale/Hier/Gov) from the SI's **SUReg**
+  joint model — see the table in [`docs/MODEL.md`](docs/MODEL.md). R² ≈ 0.917, n = 982.
+- **Confirmed structural facts:** the model is **quadratic** (negative `Xₜ²` saturation term the
+  current engine lacks); variables are **standardised (z-scored)**; **residuals are non-Gaussian**
+  (paper uses bootstrap, not the engine's Gaussian noise).
+- Predictors: **IronCav** (cavalry + iron), **MilTech** (warfare intensity), **Agri** (productivity),
+  **AgriLag** (antiquity of agriculture).
 
 ---
 
@@ -78,24 +73,29 @@ in-app note. *This is the honesty safety-net that holds until SCI-1b lands.*
 **Done when:** No user-facing surface implies the running model *is* the peer-reviewed fit; every
 counterfactual surface carries an "illustrative approximation" note.
 
-### SCI-1b — Fit the real Turchin (2022) model 🔴 · L · Phase 1 *(academic centerpiece)*
-**Problem:** The engine uses a *linear* approximation with invented coefficients; the published model
-is *quadratic* with a saturation term and different coefficients (see "Sourcing the real model" above).
+### SCI-1b — Source the real Turchin (2022) model ✅ DONE
+Located the OSF deposit, extracted the published SUReg coefficients + functional form for all three
+responses, and recorded them with full citation in [`docs/MODEL.md`](docs/MODEL.md). The misleading
+"implements Turchin (2022) / Table S3" docstrings in [`model.ts`](packages/shared/src/model.ts) were
+corrected to point at the doc and label the running coefficients as interim.
+
+### SCI-1c — Wire the real coefficients in + validate 🔴 · L · Phase 1 *(academic centerpiece)*
+**Problem:** Having the real coefficients ([`docs/MODEL.md`](docs/MODEL.md)) isn't enough — they assume
+**z-scored inputs**, but the engine's inputs are raw (`iron_cav` ∈ {0,1,2}, `agri_years_since` in years).
+Swapping coefficients in naively would make the model blow up.
 **Fix:**
-1. Locate the replication deposit (DOI/OSF/Zenodo) **or** transcribe from Eq 2 + Table S3.
-2. Restructure [`model.ts`](packages/shared/src/model.ts) to the published functional form —
-   add the `−β·Xₜ²` saturation term; set per-response (Scale/Hier/Gov) coefficients from Table S3.
-3. Reconcile variable definitions: the engine's `pc1_composite`/`iron_cav`/`mil_tech_index`/
-   `agri_productivity` must match the paper's `Scale`/`IronCav`/`MilTech`/`Agri`/`AgriLag` scaling.
-4. Derive `residual_sd` from the paper's reported residual variance (fixes SCI-4 at the source).
-5. Validate: reproduce a published trajectory/figure within tolerance; add a test asserting
-   coefficients match the source.
-6. Then flip the labels from SCI-1a back to "the Turchin et al. (2022) model."
-**Risks/unknowns:** deposit may be hard to locate; variable scaling reconciliation is the fiddly part;
-may need to re-derive the PC1/Scale inputs in the ETL ([`compute_complexity_scores.py`](data/etl/compute_complexity_scores.py))
-to match the paper rather than the current "illustrative defaults."
-**Done when:** Coefficients and functional form are sourced from the paper, a validation test passes,
-and the "approximate" disclaimers are removed because they're no longer true.
+1. Extract the input standardisation (means/SDs per variable) from the R scripts in
+   `Evol_SPC_SI_Draft.zip` on OSF; reconcile with the ETL
+   ([`compute_complexity_scores.py`](data/etl/compute_complexity_scores.py)).
+2. Restructure [`model.ts`](packages/shared/src/model.ts) to the quadratic form; project Scale/Hier/Gov
+   with the real per-response coefficients; derive PC1 from the three.
+3. Use the real residual SEs for the bands; ideally bootstrap empirical residuals instead of Gaussian
+   noise (the paper's residuals are non-Gaussian) — also closes SCI-4 properly.
+4. Validate: reproduce the paper's Figure 4 trajectory within tolerance; add a test asserting the
+   in-code coefficients equal [`docs/MODEL.md`](docs/MODEL.md).
+5. Then remove the "illustrative approximation" caveats (SCI-1a), because they're no longer true.
+**Done when:** the engine runs the published coefficients on correctly-standardised inputs, a validation
+test passes, and the interim disclaimers are removed.
 
 ### SCI-2 — Remove the misleading "+X% more complex" statistic 🔴 · S
 **Problem:** `delta_complexity` is a standardized PC1 delta (≈ z-score); [`CounterfactualResults.tsx:119`](packages/web/src/components/CounterfactualResults.tsx)
@@ -294,7 +294,8 @@ to seshat-db.com, fixed `your-org` → `mosse` clone URLs).
 
 ### Phase 1 — Academic backbone (the priority) 🟠 🔴
 The MCP server is the backbone; make it solid, reproducible, and scientifically real.
-- **The real model:** **SCI-1b** (fit/transcribe the published Turchin model — the centerpiece).
+- **The real model:** **SCI-1b** ✅ (published coefficients sourced + documented in
+  [`docs/MODEL.md`](docs/MODEL.md)) → **SCI-1c** (wire them in + validate — the centerpiece, in progress).
 - **MCP solidity for local research:** **MCP-1/A** (reframe to local stdio, kill the SSE fiction),
   **MCP-3** (Dockerfile), **MCP-4** (input validation + schema tightening), **SCI-6** (dedupe engine).
 - **Reproducibility & citation:** **ACAD-1** (methods write-up), **ACAD-2** (`CITATION.cff`),

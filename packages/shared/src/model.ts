@@ -1,12 +1,18 @@
 /**
  * Dynamic regression forward projection model.
  *
- * Implements the Turchin et al. (2022) Science Advances model:
- *   PC1_t+1 = α + β1·PC1_t + β2·IronCav_t + β3·MilTech_t + β4·Agri_t + β5·AgriLag_t + ε
+ * INTERIM ILLUSTRATIVE CALIBRATION — these coefficients are NOT the published
+ * Turchin et al. (2022) values. The real published SUReg coefficients (and the
+ * correct *quadratic* functional form, which this linear version lacks) are
+ * documented in `docs/MODEL.md`, sourced from the OSF deposit (osf.io/tekb6).
  *
- * Coefficients are from the "best model" (lowest AIC) reported in
- * Table S3 of the supplementary materials. These approximate values
- * should be replaced with exact coefficients from the replication code.
+ * They are not wired in here yet because the published coefficients assume
+ * z-scored inputs, and this engine's inputs are on raw scales — see SCI-1c in
+ * IMPROVEMENT_PLAN.md (reconcile input standardisation, then swap these out and
+ * validate against the paper's Figure 4 trajectory).
+ *
+ * Until then this produces internally-consistent but illustrative dynamics, and
+ * all user-facing surfaces label it as such.
  *
  * The forward projection runs century-by-century, with Monte Carlo
  * sampling (N=1000) to generate confidence bands.
@@ -19,11 +25,9 @@ import type {
 } from './types.js';
 
 /**
- * Model coefficients from Turchin et al. (2022) Table S3.
- *
- * These are approximate values for the composite PC1 model.
- * The sub-component models (scale, hier, gov) use slightly
- * different coefficients but the same predictor structure.
+ * INTERIM illustrative coefficients (NOT the published values).
+ * The real SUReg coefficients are tabulated in `docs/MODEL.md`; swapping them
+ * in is tracked as SCI-1c (needs input standardisation first).
  */
 export const MODEL_COEFFICIENTS = {
   intercept: 0.15,
