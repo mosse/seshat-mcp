@@ -23,7 +23,7 @@ export default function ResearchPage() {
         </p>
         <CodeBlock
           label="bash"
-          code={`git clone https://github.com/your-org/seshat-mcp
+          code={`git clone https://github.com/mosse/seshat-mcp
 cd seshat-mcp/packages/mcp-server
 cp .env.example .env  # Add your Supabase credentials
 pnpm install

@@ -15,18 +15,20 @@ export default function AboutPage() {
 
         <h2>How it works</h2>
         <p>
-          The estimation engine is based on the dynamic regression model from
-          Turchin et al. (2022), which identifies four key predictors of social
-          complexity: the existing complexity level, the presence of iron weapons
-          and cavalry, military technology breadth, and agricultural
-          productivity.
+          The estimation engine is based on an{' '}
+          <strong>illustrative approximation</strong> of the dynamic regression
+          model from Turchin et al. (2022), which identifies four key predictors of
+          social complexity: the existing complexity level, the presence of iron
+          weapons and cavalry, military technology breadth, and agricultural
+          productivity. It reproduces the <em>shape</em> of that model rather than
+          its exact published coefficients (which we are working to source and fit).
         </p>
         <p>
           When you inject a change (like giving the Maya iron weapons), the model
           projects how the polity&apos;s social complexity score would diverge from
           its historical trajectory. Monte Carlo simulation (1,000 samples)
-          generates confidence bands that widen over time, reflecting increasing
-          uncertainty in longer projections.
+          generates confidence bands that represent the statistical noise within
+          the model itself — not the full range of historical possibility.
         </p>
 
         <h2>The data</h2>
@@ -40,6 +42,17 @@ export default function AboutPage() {
 
         <h2>Limitations</h2>
         <ul>
+          <li>
+            The model coefficients are currently an approximation of the published
+            Turchin et al. (2022) model, not its exact fitted values. Treat the
+            numbers as directional illustrations, not authoritative estimates.
+          </li>
+          <li>
+            Scenario effects are <strong>schematic</strong>: injecting a change
+            nudges the model&apos;s inputs in a plausible direction rather than
+            precisely simulating each technology, so different scenarios can produce
+            similar trajectories.
+          </li>
           <li>
             The regression model was developed primarily on Eurasian data.
             Estimates for the Americas and Oceania carry higher uncertainty.

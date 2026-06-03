@@ -116,10 +116,11 @@ export function CounterfactualResults({
   }, [polity.id, scenario.id, injectionYear]);
 
   const yearLabel = formatYear(injectionYear);
-  const deltaPct = projection
-    ? `${projection.delta_complexity > 0 ? '+' : ''}${(projection.delta_complexity * 100).toFixed(0)}%`
+  const deltaVal = projection
+    ? `${projection.delta_complexity > 0 ? '+' : ''}${projection.delta_complexity.toFixed(2)}`
     : null;
   const deltaPositive = (projection?.delta_complexity ?? 0) >= 0;
+  const deltaDir = deltaPositive ? 'higher' : 'lower';
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
@@ -154,11 +155,11 @@ export function CounterfactualResults({
             <h2 className="font-display text-2xl font-semibold text-parchment">
               The divergence
             </h2>
-            {deltaPct && (
+            {deltaVal && (
               <span
                 className={`font-mono text-sm ${deltaPositive ? 'text-patina-300' : 'text-terracotta'}`}
               >
-                {deltaPct} by century 5
+                {deltaVal} index pts
               </span>
             )}
           </div>
@@ -170,10 +171,18 @@ export function CounterfactualResults({
             />
           </div>
           <p className="mt-4 text-sm leading-relaxed text-parchment-dim">
-            The model projects {polity.name} would have been{' '}
-            <span className="font-semibold text-parchment">{deltaPct}</span> more
-            complex by century 5. The shaded region is the 90% confidence
-            interval — it widens over time as uncertainty compounds.
+            The model projects {polity.name}&rsquo;s social-complexity index would
+            have ended about{' '}
+            <span className="font-semibold text-parchment">{deltaVal}</span> points{' '}
+            {deltaDir} than its historical path — on the model&rsquo;s standardised
+            scale (not a percentage). The shaded region shows the model&rsquo;s
+            statistical spread (~90% interval); it reflects noise within the model,
+            not the full range of historical possibility.
+          </p>
+          <p className="mt-3 text-xs italic text-parchment-faint">
+            These estimates use an <em>illustrative approximation</em> of the
+            Turchin et al. (2022) model, not its exact published coefficients — read
+            them as directional, not authoritative.
           </p>
         </section>
       )}

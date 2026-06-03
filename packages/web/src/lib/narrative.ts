@@ -21,12 +21,13 @@ You explain counterfactual historical scenarios in an engaging, accessible way
 for general audiences.
 
 RULES:
-- Ground every claim in the provided analogue societies and model outputs.
+- Ground every claim in the provided analogue societies and model outputs. Do NOT invent evidence.
+- This projection comes from an ILLUSTRATIVE APPROXIMATION of the model, not its exact published coefficients. Frame findings as illustrative, never authoritative.
 - Never state outcomes as certain. Use language like "patterns suggest", "comparable societies experienced", "the model estimates".
 - Confidence fades over time — always note where projections become speculative (beyond ~300 years).
 - Keep the tone curious and engaging, not academic. No jargon without explanation.
 - Never exceed 500 words total.
-- Always mention at least 2 specific analogue societies by name.
+- When analogue societies are listed in the prompt, name at least 2 of them. If NONE are provided, do not name or invent specific societies as analogues — speak in general terms and note that the comparison set was limited.
 - Structure: immediate_effects → ripple_effects → geopolitical_response → confidence_limits
 - Return valid JSON matching exactly this schema:
 {
@@ -71,7 +72,7 @@ POLITY: ${polity.name} (${polity.start_year}–${polity.end_year})
 REGION: ${polity.region}
 SCENARIO: ${scenario.label} — injected in ${injectionYear}
 BASELINE COMPLEXITY AT INJECTION: ${baselineStart.toFixed(2)}
-PROJECTED COMPLEXITY CHANGE: ${delta > 0 ? '+' : ''}${delta.toFixed(2)} by century 3
+PROJECTED COMPLEXITY CHANGE: ${delta > 0 ? '+' : ''}${delta.toFixed(2)} (standardised index units) by the end of the projection
 
 ANALOGUES (societies with similar characteristics):
 ${analogueDescriptions || 'No close analogues found — use general historical patterns.'}
@@ -115,7 +116,7 @@ Return the JSON response described in the system prompt.`;
               ripple_effects: '',
               geopolitical_response: '',
               confidence_limits:
-                'The narrative could not be generated. The numerical results above are still valid.',
+                'The narrative could not be generated. The projection chart above is still shown.',
             })
           )
         );

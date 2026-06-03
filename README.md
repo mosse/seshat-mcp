@@ -106,11 +106,13 @@ cd data/etl && source .venv/bin/activate && pytest tests/
 
 ## How estimates work — and their limits
 
-The counterfactual engine uses the dynamic regression model from Turchin et al. (2022), *Disentangling the evolutionary drivers of social complexity* (*Science Advances*), with Monte Carlo sampling to produce confidence bands.
+The counterfactual engine uses an **illustrative approximation** of the dynamic regression model from Turchin et al. (2022), *Disentangling the evolutionary drivers of social complexity* (*Science Advances*), with Monte Carlo sampling over the model's residual noise to produce confidence bands.
+
+> ⚠️ **The current coefficients are approximate placeholders, not the published fit.** Sourcing/fitting the real model (and other honesty fixes) is tracked in [`IMPROVEMENT_PLAN.md`](IMPROVEMENT_PLAN.md). Until then, read projections as directional illustrations, not authoritative estimates.
 
 A few things to keep in mind when reading any projection:
 
-- **Uncertainty is a feature.** Every projection ships with confidence bands and an explicit `confidence_limits` section. Treat the central line as one path through a wide cone, not a prediction.
+- **Uncertainty is a feature.** Every projection ships with confidence bands and an explicit `confidence_limits` section. The bands capture statistical noise within the model — not the full range of historical contingency. Treat the central line as one illustrative path, not a prediction.
 - **Eurasian validation.** The regression model was validated on Eurasian data. Projections for the **Americas and Oceania-Pacific** carry a prominent caveat and should be read with extra caution.
 - **Year convention.** BCE years are negative integers (year 0 = 1 BCE, astronomical). They're displayed as `"500 BCE"`, never `"-500"`.
 

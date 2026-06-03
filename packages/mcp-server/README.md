@@ -1,13 +1,13 @@
 # Seshat MCP Server
 
-An open-source MCP (Model Context Protocol) server that exposes the [Seshat Global History Databank](https://seshatdatabank.info) as queryable tools for Claude and other MCP-enabled AI assistants.
+An open-source MCP (Model Context Protocol) server that exposes the [Seshat Global History Databank](https://seshat-db.com/) as queryable tools for Claude and other MCP-enabled AI assistants.
 
 Point Claude at this server and ask questions like *"Which Eurasian societies had cavalry before 800 BCE?"* without writing any code.
 
 ## Quickstart
 
 ```bash
-git clone https://github.com/your-org/seshat-mcp
+git clone https://github.com/mosse/seshat-mcp
 cd seshat-mcp/packages/mcp-server
 cp .env.example .env   # Add your Supabase credentials
 pnpm install
@@ -120,7 +120,7 @@ Track how a technology spread across regions over time.
 
 ### `run_counterfactual_estimate`
 
-Project estimated complexity under counterfactual conditions using the Turchin et al. (2022) dynamic regression model with Monte Carlo confidence bands.
+Project estimated complexity under counterfactual conditions using an illustrative approximation of the Turchin et al. (2022) dynamic regression model with Monte Carlo confidence bands. (Coefficients are currently approximate placeholders, not the published fit — read results as directional.)
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|

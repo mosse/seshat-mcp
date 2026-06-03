@@ -280,12 +280,17 @@ describe all params.
 
 ## Phasing (academics-first ordering)
 
-### Phase 0 — Honesty pass (ship first; all S, ~1–2 days) 🔴
+### Phase 0 — Honesty pass ✅ DONE (June 2026)
 The truthfulness gates — make nothing the tool says misleading, *today*.
-**SCI-1a** (relabel as illustrative), **SCI-2** (drop the fake "%"), **SCI-3** (stop narrative
-confabulation), **SCI-4** (correct band copy), **SCI-7** (soften "still valid"), **SCI-5/A**
-(disclose scenarios are schematic), **DOC-1** (fix URL/endpoint inconsistencies).
-*Outcome: nothing the tool claims about itself is untrue.*
+**SCI-1a** ✅ (relabel as illustrative across about/READMEs/tool desc + in-app note),
+**SCI-2** ✅ (replaced fake "+X%" with standardised index points), **SCI-3** ✅ (prompt no longer
+demands invented analogues; anti-fabrication rule added), **SCI-4** ✅ (band copy now says "noise within
+the model, not historical possibility"), **SCI-7** ✅ ("still valid" → "still shown"), **SCI-5/A** ✅
+(schematic-scenarios + approximate-coefficients caveats on About), **DOC-1** ✅ (unified Seshat domain
+to seshat-db.com, fixed `your-org` → `mosse` clone URLs).
+*Outcome: nothing the tool claims about itself is untrue. Note: SCI-3's fuller "wire real analogues"
+(D4-B) moves to Phase 1 — the web route needs the analogue query consolidated into `@seshat/shared`
+(overlaps SCI-6).*
 
 ### Phase 1 — Academic backbone (the priority) 🟠 🔴
 The MCP server is the backbone; make it solid, reproducible, and scientifically real.
