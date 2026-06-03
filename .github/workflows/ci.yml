@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel in-progress runs for the same branch/PR when new commits land.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # @seshat/shared must be built before the packages that depend on it.
+      - name: Build shared
+        run: pnpm --filter @seshat/shared build
+
+      - name: Build MCP server
+        run: pnpm --filter @seshat/mcp-server build
+
+      # next build runs tsc — this is the type-check guard for the web app.
+      - name: Build web app
+        run: pnpm --filter web build
+
+      - name: Test MCP server
+        run: pnpm --filter @seshat/mcp-server test
+
+  e2e:
+    name: Web e2e (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The web app imports the estimation engine from @seshat/shared.
+      - name: Build shared
+        run: pnpm --filter @seshat/shared build
+
+      # Desktop Chrome (chromium) + mobile (iPhone 14 → webkit); --with-deps
+      # installs the Linux system libraries WebKit needs.
+      - name: Install Playwright browsers
+        run: pnpm --filter web exec playwright install --with-deps chromium webkit
+
+      # The Playwright config boots its own dev server; CI=true enables retries
+      # and a single worker.
+      - name: Run e2e tests
+        run: pnpm --filter web exec playwright test
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: packages/web/playwright-report/
+          retention-days: 7
