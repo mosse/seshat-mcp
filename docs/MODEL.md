@@ -1,8 +1,10 @@
 # The counterfactual model — methods & provenance
 
-> Status: the **real published coefficients are now sourced and recorded here** (SCI-1b,
-> step 1). Wiring them into the engine requires reconciling input standardisation
-> (SCI-1c) — see "Gap to full fidelity" below. Until then the running engine uses an
+> Status: the **real published coefficients are sourced, recorded here, and independently
+> validated** — re-fitting the deposit's own data reproduces every coefficient to 5 dp (see
+> [`MODEL_AUDIT.md`](MODEL_AUDIT.md)). The standardisation method and the standardized-square
+> maps needed to run the model forward have also been recovered. What remains is wiring this
+> into the engine + validating the trajectory (SCI-1c); until then the running engine uses an
 > interim illustrative calibration (see [`model.ts`](../packages/shared/src/model.ts)).
 
 ## Source

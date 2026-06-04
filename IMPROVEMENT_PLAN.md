@@ -80,22 +80,26 @@ responses, and recorded them with full citation in [`docs/MODEL.md`](docs/MODEL.
 corrected to point at the doc and label the running coefficients as interim.
 
 ### SCI-1c — Wire the real coefficients in + validate 🔴 · L · Phase 1 *(academic centerpiece)*
-**Problem:** Having the real coefficients ([`docs/MODEL.md`](docs/MODEL.md)) isn't enough — they assume
-**z-scored inputs**, but the engine's inputs are raw (`iron_cav` ∈ {0,1,2}, `agri_years_since` in years).
-Swapping coefficients in naively would make the model blow up.
-**Fix:**
-1. Extract the input standardisation (means/SDs per variable) from the R scripts in
-   `Evol_SPC_SI_Draft.zip` on OSF; reconcile with the ETL
-   ([`compute_complexity_scores.py`](data/etl/compute_complexity_scores.py)).
-2. Restructure [`model.ts`](packages/shared/src/model.ts) to the quadratic form; project Scale/Hier/Gov
-   with the real per-response coefficients; derive PC1 from the three.
-3. Use the real residual SEs for the bands; ideally bootstrap empirical residuals instead of Gaussian
-   noise (the paper's residuals are non-Gaussian) — also closes SCI-4 properly.
-4. Validate: reproduce the paper's Figure 4 trajectory within tolerance; add a test asserting the
-   in-code coefficients equal [`docs/MODEL.md`](docs/MODEL.md).
-5. Then remove the "illustrative approximation" caveats (SCI-1a), because they're no longer true.
-**Done when:** the engine runs the published coefficients on correctly-standardised inputs, a validation
-test passes, and the interim disclaimers are removed.
+**Audit/recovery — ✅ DONE** (see [`docs/MODEL_AUDIT.md`](docs/MODEL_AUDIT.md)):
+- Pulled the OSF data+code zip (SHA-256 recorded); confirmed the standardisation method from
+  `fRegrDat.R` (full-sample z-score).
+- **Independently re-fit** the regressions from the deposit's `MultiVar.csv` — reproduces every
+  published coefficient to 5 dp (validates both coefficients and data).
+- Recovered the standardized-square maps (R²=1.0) that close the recurrence in standardized space.
+- Result: a complete, validated, no-invented-numbers spec ([`MODEL_AUDIT.md`](docs/MODEL_AUDIT.md) §5).
+
+**Implementation — remaining:**
+1. Restructure [`model.ts`](packages/shared/src/model.ts) to the quadratic form; project
+   Scale/Hier/Gov with the validated coefficients + recovered `.sq` maps; derive PC1.
+2. Use the real residual SDs (from the re-fit residuals) for the bands; label the Gaussian band as
+   an approximation of the paper's non-Gaussian bootstrap (also closes SCI-4).
+3. Validate: cross-implementation test (TS engine vs a Python reference trajectory) + a test asserting
+   in-code coefficients equal [`docs/MODEL.md`](docs/MODEL.md); reproduce Fig 4 where feasible.
+4. Map app raw inputs → standardized space (the qualitative→standardized injection deltas need the
+   upstream PCA/aggregation constants — overlaps Layer 3). Until that + real data land, keep the
+   "illustrative" caveat (now "real model, illustrative inputs" rather than "invented model").
+**Done when:** the engine runs the validated coefficients, a cross-implementation test passes, and the
+remaining caveats describe only the *input* gap, not the model.
 
 ### SCI-2 — Remove the misleading "+X% more complex" statistic 🔴 · S
 **Problem:** `delta_complexity` is a standardized PC1 delta (≈ z-score); [`CounterfactualResults.tsx:119`](packages/web/src/components/CounterfactualResults.tsx)
