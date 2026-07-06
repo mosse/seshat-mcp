@@ -1,11 +1,12 @@
 # The counterfactual model — methods & provenance
 
-> Status: the **real published coefficients are sourced, recorded here, and independently
-> validated** — re-fitting the deposit's own data reproduces every coefficient to 5 dp (see
-> [`MODEL_AUDIT.md`](MODEL_AUDIT.md)). The standardisation method and the standardized-square
-> maps needed to run the model forward have also been recovered. What remains is wiring this
-> into the engine + validating the trajectory (SCI-1c); until then the running engine uses an
-> interim illustrative calibration (see [`model.ts`](../packages/shared/src/model.ts)).
+> Status: **the engine now implements this model.** The published coefficients were sourced from
+> the replication deposit, independently validated (re-fit reproduces every coefficient to 5 dp),
+> and wired into [`model.ts`](../packages/shared/src/model.ts) with coefficient-equality and
+> cross-implementation tests — see [`MODEL_AUDIT.md`](MODEL_AUDIT.md) §5c for the full trail.
+> The remaining gap is the **input data**: end-to-end app output stays directional until real
+> Seshat ingestion lands (Layer 3), and the Gaussian Monte-Carlo band approximates the paper's
+> non-parametric bootstrap.
 
 ## Source
 
@@ -79,18 +80,19 @@ uses **non-parametric bootstrap** for confidence intervals. Any Monte-Carlo band
 Gaussian noise (as the current engine does) is an approximation of the published bootstrap
 procedure and should be labelled as such.
 
-## Gap to full fidelity (SCI-1c)
+## Fidelity status (SCI-1c — implemented)
 
-Having the coefficients is necessary but not sufficient. To produce quantitatively valid output:
+1. **Standardised inputs** ✅ — predictor constants recovered from the deposit by joining the
+   regression rows back to the raw table (near-exact, corr 0.991–0.9996; the gap is the paper's
+   multiple-imputation step). See `MODEL_AUDIT.md` §5b.
+2. **Three-dimension projection** ✅ — Scale/Hier/Gov each run their own published equation; PC1
+   is their mean (an app-level summary, documented as such).
+3. **Real residual SDs** ✅ — bands use the re-fit residual SDs (Scale 0.288106 / Hier 0.335424 /
+   Gov 0.352592). Gaussian noise remains an approximation of the paper's bootstrap (labelled).
+4. **Validation** ✅ — coefficient-equality tests against `MODEL_AUDIT.md`, plus a
+   cross-implementation test reproducing an independent Python reference trajectory to <1e-9.
+   (Quantitative Fig 4 reproduction remains open.)
 
-1. **Standardise inputs to match.** The coefficients assume z-scored predictors. The engine's
-   inputs (`iron_cav` ∈ {0,1,2}, `agri_years_since` in raw years, etc.) must be standardised
-   using the same means/SDs the paper used — extractable from the R scripts in
-   `Evol_SPC_SI_Draft.zip`. Without this, the coefficients cannot be applied directly.
-2. **Project the three dimensions** (Scale/Hier/Gov) with their own equations, then derive PC1.
-3. **Use the real residual SEs** for the bands, and ideally bootstrap from empirical residuals
-   rather than Gaussian noise.
-4. **Validate** by reproducing the paper's Figure 4 simulated trajectory within tolerance, and
-   add a test asserting the in-code coefficients equal the values in this document.
-
-Only after (1)–(4) should the user-facing "illustrative approximation" caveats be removed.
+**Remaining before outputs are more than directional:** real Seshat input data through the ETL
+(Layer 3), exact predictor constants (re-running the paper's imputation), and empirical-residual
+bootstrap bands.

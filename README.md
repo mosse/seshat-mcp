@@ -106,9 +106,9 @@ cd data/etl && source .venv/bin/activate && pytest tests/
 
 ## How estimates work — and their limits
 
-The counterfactual engine uses an **illustrative approximation** of the dynamic regression model from Turchin et al. (2022), *Disentangling the evolutionary drivers of social complexity* (*Science Advances*), with Monte Carlo sampling over the model's residual noise to produce confidence bands.
+The counterfactual engine implements the dynamic regression model from Turchin et al. (2022), *Disentangling the evolutionary drivers of social complexity* (*Science Advances*), using the **published coefficients recovered from the paper's replication deposit and independently validated** — see [`docs/MODEL.md`](docs/MODEL.md) and the audit trail in [`docs/MODEL_AUDIT.md`](docs/MODEL_AUDIT.md). Monte Carlo sampling at the published residual scale produces the confidence bands.
 
-> ⚠️ **The current coefficients are approximate placeholders, not the published fit.** Sourcing/fitting the real model (and other honesty fixes) is tracked in [`IMPROVEMENT_PLAN.md`](IMPROVEMENT_PLAN.md). Until then, read projections as directional illustrations, not authoritative estimates.
+> ⚠️ **The model is real; the input data is still illustrative.** The engine runs the validated published equations, but the historical values feeding it remain placeholder-grade until real Seshat ingestion lands (tracked in [`IMPROVEMENT_PLAN.md`](IMPROVEMENT_PLAN.md)). The bands use Gaussian noise as an approximation of the paper's bootstrap. Read projections as directional illustrations, not authoritative estimates.
 
 A few things to keep in mind when reading any projection:
 

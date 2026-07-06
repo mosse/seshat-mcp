@@ -1,0 +1,168 @@
+{
+ "_meta": "Reference trajectories for the Turchin (2022) recurrence, generated independently in Python from the validated spec in docs/MODEL_AUDIT.md \u00a75. The TS engine must reproduce these to <1e-9.",
+ "cases": [
+  {
+   "name": "baseline",
+   "start": {
+    "century": 0,
+    "pc1_composite": -0.4,
+    "pc1_scale": -0.5,
+    "pc1_hier": -0.3,
+    "pc1_gov": -0.4,
+    "iron_cav": 1,
+    "mil_tech_index": 0.4,
+    "agri_productivity": 0.8,
+    "agri_years_since": 3000
+   },
+   "centuries": 5,
+   "points": [
+    {
+     "century": 0,
+     "pc1_composite": -0.4,
+     "pc1_scale": -0.5,
+     "pc1_hier": -0.3,
+     "pc1_gov": -0.4
+    },
+    {
+     "century": 100,
+     "pc1_composite": -0.22956187795646577,
+     "pc1_scale": -0.32419657690365705,
+     "pc1_hier": -0.16345571980164,
+     "pc1_gov": -0.2010333371641002
+    },
+    {
+     "century": 200,
+     "pc1_composite": -0.07445350946275475,
+     "pc1_scale": -0.16231163931960477,
+     "pc1_hier": -0.04125384150778548,
+     "pc1_gov": -0.019795047560874017
+    },
+    {
+     "century": 300,
+     "pc1_composite": 0.063114539975025,
+     "pc1_scale": -0.016178367251754137,
+     "pc1_hier": 0.06665713000696209,
+     "pc1_gov": 0.13886485716986705
+    },
+    {
+     "century": 400,
+     "pc1_composite": 0.18231910973686183,
+     "pc1_scale": 0.11336779382467158,
+     "pc1_hier": 0.16086231992120223,
+     "pc1_gov": 0.2727272154647117
+    },
+    {
+     "century": 500,
+     "pc1_composite": 0.28357687059141784,
+     "pc1_scale": 0.22638565774161112,
+     "pc1_hier": 0.24233096018633837,
+     "pc1_gov": 0.3820139938463041
+    }
+   ]
+  },
+  {
+   "name": "ironcav_injection",
+   "start": {
+    "century": 0,
+    "pc1_composite": -0.4,
+    "pc1_scale": -0.5,
+    "pc1_hier": -0.3,
+    "pc1_gov": -0.4,
+    "iron_cav": 2,
+    "mil_tech_index": 0.4,
+    "agri_productivity": 0.8,
+    "agri_years_since": 3000
+   },
+   "centuries": 5,
+   "points": [
+    {
+     "century": 0,
+     "pc1_composite": -0.4,
+     "pc1_scale": -0.5,
+     "pc1_hier": -0.3,
+     "pc1_gov": -0.4
+    },
+    {
+     "century": 100,
+     "pc1_composite": -0.1453954360190004,
+     "pc1_scale": -0.21961412375969552,
+     "pc1_hier": -0.11379404961421584,
+     "pc1_gov": -0.10277813468308986
+    },
+    {
+     "century": 200,
+     "pc1_composite": 0.08434998336549016,
+     "pc1_scale": 0.036033976156320036,
+     "pc1_hier": 0.05178030736279894,
+     "pc1_gov": 0.16523566657735148
+    },
+    {
+     "century": 300,
+     "pc1_composite": 0.2835239155141293,
+     "pc1_scale": 0.2616023228917449,
+     "pc1_hier": 0.19619307681827236,
+     "pc1_gov": 0.3927763468323706
+    },
+    {
+     "century": 400,
+     "pc1_composite": 0.4500770975338222,
+     "pc1_scale": 0.4547422270273845,
+     "pc1_hier": 0.320054574406944,
+     "pc1_gov": 0.5754344911671381
+    },
+    {
+     "century": 500,
+     "pc1_composite": 0.5852329399389005,
+     "pc1_scale": 0.6158140847110296,
+     "pc1_hier": 0.42481274897532206,
+     "pc1_gov": 0.7150719861303498
+    }
+   ]
+  },
+  {
+   "name": "at_sample_mean",
+   "start": {
+    "century": -500,
+    "pc1_composite": 0.0,
+    "pc1_scale": 0.0,
+    "pc1_hier": 0.0,
+    "pc1_gov": 0.0,
+    "iron_cav": 0,
+    "mil_tech_index": 0.0,
+    "agri_productivity": 0.575033,
+    "agri_years_since": 2255.386179
+   },
+   "centuries": 3,
+   "points": [
+    {
+     "century": -500,
+     "pc1_composite": 0.0,
+     "pc1_scale": 0.0,
+     "pc1_hier": 0.0,
+     "pc1_gov": 0.0
+    },
+    {
+     "century": -400,
+     "pc1_composite": -0.044329096571223824,
+     "pc1_scale": -0.008102120317840807,
+     "pc1_hier": -0.0614611844767344,
+     "pc1_gov": -0.06342398491909626
+    },
+    {
+     "century": -300,
+     "pc1_composite": -0.08147993228452226,
+     "pc1_scale": -0.013609401622414793,
+     "pc1_hier": -0.11281520221751083,
+     "pc1_gov": -0.11801519301364116
+    },
+    {
+     "century": -200,
+     "pc1_composite": -0.11274316534468631,
+     "pc1_scale": -0.01687215743993247,
+     "pc1_hier": -0.15575246638869086,
+     "pc1_gov": -0.16560487220543563
+    }
+   ]
+  }
+ ]
+}

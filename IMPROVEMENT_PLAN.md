@@ -88,18 +88,21 @@ corrected to point at the doc and label the running coefficients as interim.
 - Recovered the standardized-square maps (R²=1.0) that close the recurrence in standardized space.
 - Result: a complete, validated, no-invented-numbers spec ([`MODEL_AUDIT.md`](docs/MODEL_AUDIT.md) §5).
 
-**Implementation — remaining:**
-1. Restructure [`model.ts`](packages/shared/src/model.ts) to the quadratic form; project
-   Scale/Hier/Gov with the validated coefficients + recovered `.sq` maps; derive PC1.
-2. Use the real residual SDs (from the re-fit residuals) for the bands; label the Gaussian band as
-   an approximation of the paper's non-Gaussian bootstrap (also closes SCI-4).
-3. Validate: cross-implementation test (TS engine vs a Python reference trajectory) + a test asserting
-   in-code coefficients equal [`docs/MODEL.md`](docs/MODEL.md); reproduce Fig 4 where feasible.
-4. Map app raw inputs → standardized space (the qualitative→standardized injection deltas need the
-   upstream PCA/aggregation constants — overlaps Layer 3). Until that + real data land, keep the
-   "illustrative" caveat (now "real model, illustrative inputs" rather than "invented model").
-**Done when:** the engine runs the validated coefficients, a cross-implementation test passes, and the
-remaining caveats describe only the *input* gap, not the model.
+**Implementation — ✅ DONE** (see [`docs/MODEL_AUDIT.md`](docs/MODEL_AUDIT.md) §5b–5c):
+1. ✅ [`model.ts`](packages/shared/src/model.ts) rewritten to the published quadratic recurrence
+   (`TURCHIN_2022`); Scale/Hier/Gov projected with their own validated equations; PC1 = their mean
+   (documented app-level summary).
+2. ✅ Bands use the exact re-fit residual SDs (0.288106 / 0.335424 / 0.352592); Gaussian noise
+   labelled as an approximation of the paper's bootstrap.
+3. ✅ Validation tests: coefficient-equality vs the audit doc + cross-implementation vs an
+   independent Python reference trajectory (<1e-9, 3 cases). 61 MCP tests pass.
+4. ✅ Input mapping via predictor constants recovered from the deposit (near-exact, corr
+   0.991–0.9996 — the gap is the paper's multiple-imputation step; documented). Raw IronCav uses
+   the same 0..2 coding as the app's `iron_cav`.
+5. ✅ All user-facing caveats updated: "real published model, **illustrative inputs**".
+**Still open (folded into Layer 3 / later):** real Seshat input data through the ETL; exact predictor
+constants (re-run the paper's imputation); empirical-residual bootstrap bands; quantitative Fig 4
+reproduction.
 
 ### SCI-2 — Remove the misleading "+X% more complex" statistic 🔴 · S
 **Problem:** `delta_complexity` is a standardized PC1 delta (≈ z-score); [`CounterfactualResults.tsx:119`](packages/web/src/components/CounterfactualResults.tsx)

@@ -120,7 +120,7 @@ Track how a technology spread across regions over time.
 
 ### `run_counterfactual_estimate`
 
-Project estimated complexity under counterfactual conditions using an illustrative approximation of the Turchin et al. (2022) dynamic regression model with Monte Carlo confidence bands. (Coefficients are currently approximate placeholders, not the published fit — read results as directional.)
+Project estimated complexity under counterfactual conditions using the Turchin et al. (2022) dynamic regression model — published coefficients, recovered from the paper's replication deposit and independently validated (see `docs/MODEL_AUDIT.md`) — with Monte Carlo confidence bands. (Underlying historical input data is still illustrative — read results as directional.)
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|

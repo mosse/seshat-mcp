@@ -87,25 +87,71 @@ Gov.sq   = 0.376006·Gov²   + 0.689379·Gov   − 0.375623
 Gov'     = 1.02589·Gov − 0.248156·Gov.sq + 0.0499141·Agri + 0.0685953·MilTech + 0.0874432·IronCav
 ```
 
-Residual SD for the Monte-Carlo bands (standardized units): Scale ≈ 0.288 (SUReg root MSE);
-Hier/Gov ≈ 0.30–0.34 — exact per-equation values are the residual SDs from the re-fit and will be
-computed during implementation. Note the paper's residuals are **non-Gaussian** (SI Fig S3); a
-Gaussian band is therefore an approximation of its bootstrap and must be labelled as such.
+Residual SDs for the Monte-Carlo bands (standardized units), computed from the §3 re-fit:
+
+| | Scale | Hier | Gov |
+|--|------|------|-----|
+| residual SD | **0.288106** | **0.335424** | **0.352592** |
+
+(The Scale value matches the SI's printed SUReg "Root MSE: 0.288106" digit-for-digit — an
+additional cross-check.) Note the paper's residuals are **non-Gaussian** (SI Fig S3); a Gaussian
+band is therefore an approximation of its bootstrap and must be labelled as such.
+
+## 5b. Predictor standardisation constants — recovered (NEAR-exact)
+
+**Method:** joined the 982 standardized regression rows (`MultiVar.csv`) back to the deposit's raw
+table (`TableData.Rdata` → `AggrSCWarAgriRelig`) on (NGA, Time), constructed candidate raw
+predictors, z-scored them over the joined sample, and correlated with the standardized columns.
+
+| Predictor | Raw construction | corr(z(raw), std) | mean | sd |
+|-----------|------------------|-------------------|------|-----|
+| IronCav | `Iron{0,1} + Cavalry{0,0.5,1}` → 0..2 | 0.9962 | 0.61128 | 0.88996 |
+| MilTech | Σ(Metal,Project,Weapon,Animal,Armor,Defense), range 0–41 | 0.9916 | 16.387259 | 11.639466 |
+| Agri | productivity measure (same scale as the app's) | 0.9958 | 0.575033 | 0.461329 |
+| AgriLag | years since agriculture onset | 0.9995 | 2255.386179 | 2529.880727 |
+
+**Status: NEAR-exact, not machine-exact.** The residual gap (corr 0.991–0.9996 rather than 1.0) is
+attributable to the paper's **multiple imputation** step (the SI's "Multiple Imputation" section;
+`ImpSCDatRepl*.csv` replicates), which the deposit does not expose in final merged form. The
+constants above are recovered from the deposit's own raw data and are used for input mapping with
+this approximation status documented. Notably, raw IronCav uses the **same 0..2 coding as the
+app's `iron_cav` field**, so the flagship iron/cavalry injections map directly.
+
+## 5c. Engine implementation & cross-validation (SCI-1c) — DONE
+
+The recurrence in §5 is implemented in [`packages/shared/src/model.ts`](../packages/shared/src/model.ts)
+(`TURCHIN_2022` + `projectForward`), with:
+- dynamics in standardized space; PC1 composite = mean of the three dimensions (app-level summary,
+  documented as such — the paper models the dimensions separately);
+- deterministic path = the pure recurrence; Monte-Carlo path adds Gaussian noise at the §5 residual
+  SDs, with an out-of-domain clamp at ±4 (fitting-data range is ≈±2.5);
+- input mapping via the §5b constants.
+
+**Validation (automated, in `packages/mcp-server/tests/model.test.ts`):**
+1. *Coefficient equality* — the in-code constants are asserted equal to §3–§5 of this document.
+2. *Cross-implementation* — an independent Python implementation of the §5 spec generated reference
+   trajectories (`tests/fixtures/turchin_reference_trajectory.json`, 3 cases × 4–6 centuries); the
+   TS engine reproduces every point to <1e-9.
+3. Structural tests: injection direction, quadratic saturation (high complexity is pulled back
+   down — the behaviour the old linear engine lacked), band ordering/widening.
 
 ## 6. What is validated vs. still pending
 
-**Validated (this audit):** the coefficients (independent re-fit), the standardization method,
-the `.sq` maps, and the self-consistency checks. The model spec in §5 is trustworthy.
+**Validated:** the coefficients (independent re-fit, §3), the standardization method (§2), the
+`.sq` maps (§4), the residual SDs (§5), the engine implementation (§5c — coefficient-equality +
+cross-implementation tests), and the predictor standardisation constants to near-exactness (§5b).
 
-**Pending (tracked as SCI-1c / Layer 3):**
-- Wiring §5 into [`model.ts`](../packages/shared/src/model.ts) with a cross-implementation
-  validation test (TS engine vs a Python reference trajectory) and reproducing Fig 4.
-- Mapping the app's raw inputs into standardized space, and the qualitative→standardized
-  injection deltas for scenarios. The exact raw means/SDs for arbitrary inputs require
-  reproducing the upstream PCA/aggregation pipeline (Scale = PCA of Pop/Terr/Cap; IronCav,
-  MilTech aggregations) from `TableData.Rdata` — not yet done.
-- Real input *data*: the engine spec is real, but end-to-end app output stays illustrative until
-  the ETL produces real Seshat-derived, standardized inputs (currently "illustrative defaults").
+**Pending (Layer 3 and refinements):**
+- **Real input data** — the model is real, but end-to-end app output stays *directional* until the
+  ETL produces real Seshat-derived inputs (currently "illustrative defaults"). This is the main
+  remaining gap, and user-facing copy says so.
+- Exact predictor constants — closing the §5b multiple-imputation gap would require re-running the
+  paper's imputation pipeline (R scripts in the deposit).
+- Fig 4 reproduction — the SI's forward-simulation figure has not been quantitatively reproduced
+  (the cross-implementation fixture validates the recurrence itself; Fig 4 additionally depends on
+  the paper's start states and noise procedure).
+- Bootstrap bands — the Gaussian Monte-Carlo band is labelled as an approximation of the paper's
+  non-parametric bootstrap; empirical-residual bootstrap would close this.
 
 ## 7. Reproducing this audit
 

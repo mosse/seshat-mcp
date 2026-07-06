@@ -180,9 +180,10 @@ export function CounterfactualResults({
             not the full range of historical possibility.
           </p>
           <p className="mt-3 text-xs italic text-parchment-faint">
-            These estimates use an <em>illustrative approximation</em> of the
-            Turchin et al. (2022) model, not its exact published coefficients — read
-            them as directional, not authoritative.
+            These projections run the published Turchin et al. (2022) model
+            coefficients, independently validated against the paper&rsquo;s
+            replication data. The historical inputs feeding them are still being
+            calibrated — read results as directional, not authoritative.
           </p>
         </section>
       )}

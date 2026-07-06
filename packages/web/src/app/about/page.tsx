@@ -15,20 +15,22 @@ export default function AboutPage() {
 
         <h2>How it works</h2>
         <p>
-          The estimation engine is based on an{' '}
-          <strong>illustrative approximation</strong> of the dynamic regression
-          model from Turchin et al. (2022), which identifies four key predictors of
-          social complexity: the existing complexity level, the presence of iron
-          weapons and cavalry, military technology breadth, and agricultural
-          productivity. It reproduces the <em>shape</em> of that model rather than
-          its exact published coefficients (which we are working to source and fit).
+          The estimation engine implements the dynamic regression model from
+          Turchin et al. (2022) using its <strong>published coefficients</strong>,
+          recovered from the paper&apos;s replication deposit and independently
+          validated — we re-fit the deposit&apos;s own data and reproduced every
+          coefficient exactly. The model identifies four key predictors of social
+          complexity: the existing complexity level, the presence of iron weapons
+          and cavalry, military technology breadth, and agricultural productivity.
         </p>
         <p>
           When you inject a change (like giving the Maya iron weapons), the model
           projects how the polity&apos;s social complexity score would diverge from
           its historical trajectory. Monte Carlo simulation (1,000 samples)
-          generates confidence bands that represent the statistical noise within
-          the model itself — not the full range of historical possibility.
+          generates confidence bands at the model&apos;s published residual scale.
+          They represent statistical noise within the model — not the full range
+          of historical possibility — and use Gaussian noise as an approximation
+          of the paper&apos;s bootstrap procedure.
         </p>
 
         <h2>The data</h2>
@@ -43,9 +45,10 @@ export default function AboutPage() {
         <h2>Limitations</h2>
         <ul>
           <li>
-            The model coefficients are currently an approximation of the published
-            Turchin et al. (2022) model, not its exact fitted values. Treat the
-            numbers as directional illustrations, not authoritative estimates.
+            The model equations are the published, validated Turchin et al. (2022)
+            fit — but the historical <em>input data</em> feeding them is still
+            illustrative while real Seshat ingestion is completed. Treat outputs as
+            directional illustrations, not authoritative estimates.
           </li>
           <li>
             Scenario effects are <strong>schematic</strong>: injecting a change

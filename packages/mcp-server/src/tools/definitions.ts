@@ -185,9 +185,10 @@ export const toolDefinitions: Tool[] = [
     name: 'run_counterfactual_estimate',
     description:
       'Core estimation tool. Given a polity, an injection year, and variable changes, projects ' +
-      'the estimated complexity trajectory under counterfactual conditions using an illustrative ' +
-      'approximation of the Turchin et al. (2022) dynamic regression model (coefficients are currently ' +
-      'approximate placeholders, not the published fit — treat results as directional, not authoritative). ' +
+      'the estimated complexity trajectory under counterfactual conditions using the Turchin et al. ' +
+      '(2022) dynamic regression model — published coefficients, independently validated against the ' +
+      "paper's replication deposit (docs/MODEL_AUDIT.md). Underlying historical input data is still " +
+      'illustrative, so treat results as directional rather than authoritative. ' +
       'Returns point estimates with confidence bands from 1000 Monte Carlo samples. ' +
       'Example: "What if the Maya had iron weapons in 300 CE?"',
     inputSchema: {
