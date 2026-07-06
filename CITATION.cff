@@ -1,0 +1,56 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software in your research, please cite it as below, and
+  additionally cite the Seshat Global History Databank (Turchin et al. 2015)
+  and the model paper (Turchin et al. 2022) listed under references.
+type: software
+title: "Seshat MCP — Echoes of History"
+abstract: >-
+  An MCP (Model Context Protocol) server and web application exposing the
+  Seshat Global History Databank as queryable tools, with a counterfactual
+  projection engine implementing the dynamic regression model of
+  Turchin et al. (2022).
+authors:
+  - family-names: Macdonald
+    given-names: Mark
+repository-code: "https://github.com/mosse/seshat-mcp"
+license: MIT
+version: 0.1.0
+date-released: "2026-07-06"
+keywords:
+  - cliodynamics
+  - seshat
+  - counterfactual-history
+  - social-complexity
+  - model-context-protocol
+references:
+  - type: article
+    title: "Seshat: The Global History Databank"
+    authors:
+      - family-names: Turchin
+        given-names: Peter
+      - name: "et al."
+    journal: Cliodynamics
+    volume: 6
+    issue: 1
+    year: 2015
+  - type: article
+    title: >-
+      Disentangling the evolutionary drivers of social complexity: A
+      comprehensive test of hypotheses
+    authors:
+      - family-names: Turchin
+        given-names: Peter
+      - name: "et al."
+    journal: Science Advances
+    volume: 8
+    issue: 25
+    year: 2022
+    doi: 10.1126/sciadv.abn3517
+  - type: data
+    title: "Equinox-2020 (Seshat Global History Databank)"
+    authors:
+      - name: "Seshat Databank Project"
+    year: 2022
+    url: "https://zenodo.org/record/6642229"
+    notes: "CC BY-NC-SA 4.0 — data use must be non-commercial and attributed."

@@ -90,6 +90,8 @@ pnpm --filter web dev
 | `get_region_snapshot` | All polities active in a region during a given century |
 
 Full parameter tables are in the [MCP server README](packages/mcp-server/README.md#tools).
+Worked examples — full calls with outputs, the discovery workflow, and a variable-code
+reference — are in [`docs/EXAMPLES.md`](docs/EXAMPLES.md).
 
 ## Testing
 

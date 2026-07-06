@@ -30,14 +30,20 @@ pnpm install
 pnpm dev`}
         />
         <p>
-          Or connect to the hosted endpoint (when available):
+          Then point Claude Desktop at your local build (the server runs
+          locally over stdio — there is no hosted endpoint):
         </p>
         <CodeBlock
           label="claude_desktop_config.json"
           code={`{
   "mcpServers": {
     "seshat": {
-      "url": "https://seshat-mcp.railway.app/sse"
+      "command": "node",
+      "args": ["/path/to/seshat-mcp/packages/mcp-server/dist/index.js"],
+      "env": {
+        "SUPABASE_URL": "your-supabase-url",
+        "SUPABASE_SERVICE_KEY": "your-service-key"
+      }
     }
   }
 }`}

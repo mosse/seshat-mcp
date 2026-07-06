@@ -299,16 +299,21 @@ to seshat-db.com, fixed `your-org` → `mosse` clone URLs).
 (D4-B) moves to Phase 1 — the web route needs the analogue query consolidated into `@seshat/shared`
 (overlaps SCI-6).*
 
-### Phase 1 — Academic backbone (the priority) 🟠 🔴
+### Phase 1 — Academic backbone ✅ DONE (July 2026)
 The MCP server is the backbone; make it solid, reproducible, and scientifically real.
-- **The real model:** **SCI-1b** ✅ (published coefficients sourced + documented in
-  [`docs/MODEL.md`](docs/MODEL.md)) → **SCI-1c** (wire them in + validate — the centerpiece, in progress).
-- **MCP solidity for local research:** **MCP-1/A** (reframe to local stdio, kill the SSE fiction),
-  **MCP-3** (Dockerfile), **MCP-4** (input validation + schema tightening), **SCI-6** (dedupe engine).
-- **Reproducibility & citation:** **ACAD-1** (methods write-up), **ACAD-2** (`CITATION.cff`),
-  **ACAD-3** (data-pipeline reproducibility guide), **ACAD-4** (`CONTRIBUTING.md` + worked examples
-  with outputs), **ACAD-5** (variable-code reference), **DOC-2** (populate `docs/`).
-*Outcome: a researcher can cite, reproduce, run, and trust the MCP locally.*
+- **The real model:** **SCI-1b** ✅ + **SCI-1c** ✅ — the engine runs the published, validated
+  Turchin (2022) model (coefficient-equality + cross-implementation tests).
+- **MCP solidity:** **MCP-1/A** ✅ (stdio-only reframe; SSE/hosted fiction removed from code docs,
+  README, and research page), **MCP-3** ✅ (Dockerfile fixed + honest Docker instructions),
+  **MCP-4** ✅ (schema-driven validation, 11 tests; bounds enforced), **SCI-6** ✅ (applyChanges
+  deduped into `@seshat/shared` — the web copy had already drifted).
+- **Reproducibility & citation:** **ACAD-1** ✅ ([`docs/MODEL.md`](docs/MODEL.md) +
+  [`docs/MODEL_AUDIT.md`](docs/MODEL_AUDIT.md)), **ACAD-2** ✅ ([`CITATION.cff`](CITATION.cff)),
+  **ACAD-3** ✅ ([`data/README.md`](data/README.md)), **ACAD-4** ✅ ([`CONTRIBUTING.md`](CONTRIBUTING.md)
+  + [`docs/EXAMPLES.md`](docs/EXAMPLES.md) with outputs), **ACAD-5** ✅ (variable-code reference in
+  EXAMPLES.md), **DOC-2** ✅ (`docs/` populated).
+*Outcome achieved: a researcher can cite, reproduce, run, and trust the MCP locally — with the
+explicit caveat that ETL input data remains illustrative (Layer 3).*
 
 ### Phase 2 — Educational / lay layer 🟠
 Now make it teach the public. **LAY-1** (define social complexity), **LAY-2** (humanize numbers),

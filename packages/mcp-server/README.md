@@ -33,17 +33,12 @@ Add this to your Claude Desktop config (`~/Library/Application Support/Claude/cl
 }
 ```
 
-Or connect to the hosted endpoint (when available):
+> **Transport note:** the server is **stdio-only** — it runs locally, launched by
+> your MCP client. There is no hosted endpoint today (an HTTP transport is a
+> possible future addition, tracked in the repo's `IMPROVEMENT_PLAN.md`).
 
-```json
-{
-  "mcpServers": {
-    "seshat": {
-      "url": "https://seshat-mcp.railway.app/sse"
-    }
-  }
-}
-```
+For worked examples — full calls with outputs, the discovery workflow, and a
+variable-code reference — see [`docs/EXAMPLES.md`](../../docs/EXAMPLES.md).
 
 ## Tools
 
@@ -138,28 +133,19 @@ Get all polities active in a region during a specific century with complexity sc
 | `region` | string | Yes | Region name |
 | `century` | number | Yes | Century (e.g. -500 for 6th century BCE) |
 
-## Self-hosting
+## Running in Docker
 
-### Docker
+The repo ships a [`Dockerfile`](Dockerfile). The server speaks **stdio** (no
+network port), so run it interactively and let your MCP client attach to
+stdin/stdout:
 
-```dockerfile
-FROM node:20-alpine
-WORKDIR /app
-COPY packages/mcp-server ./packages/mcp-server
-COPY packages/shared ./packages/shared
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
-RUN corepack enable && pnpm install --frozen-lockfile
-RUN pnpm --filter @seshat/shared build && pnpm --filter @seshat/mcp-server build
-EXPOSE 3001
-CMD ["node", "packages/mcp-server/dist/index.js"]
+```bash
+docker build -f packages/mcp-server/Dockerfile -t seshat-mcp .
+docker run -i -e SUPABASE_URL=... -e SUPABASE_SERVICE_KEY=... seshat-mcp
 ```
 
-### Railway
-
-1. Connect the repo to Railway
-2. Set build command: `pnpm install && pnpm --filter @seshat/shared build && pnpm --filter @seshat/mcp-server build`
-3. Set start command: `node packages/mcp-server/dist/index.js`
-4. Add environment variables: `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `PORT`
+(Deploying as a hosted HTTP service would require an HTTP transport, which is
+not implemented yet — see `IMPROVEMENT_PLAN.md`, Phase 3.)
 
 ## Data provenance
 
