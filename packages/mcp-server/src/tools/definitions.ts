@@ -120,6 +120,8 @@ export const toolDefinitions: Tool[] = [
         polity_ids: {
           type: 'array',
           items: { type: 'string' },
+          minItems: 2,
+          maxItems: 5,
           description: '2-5 polity IDs to compare',
         },
         variables: {
@@ -201,6 +203,7 @@ export const toolDefinitions: Tool[] = [
         },
         changes: {
           type: 'array',
+          minItems: 1,
           items: {
             type: 'object',
             properties: {
@@ -215,6 +218,8 @@ export const toolDefinitions: Tool[] = [
         },
         projection_centuries: {
           type: 'number',
+          minimum: 1,
+          maximum: 20,
           description: 'Centuries to project forward (default: 5)',
         },
       },

@@ -17,6 +17,7 @@ import {
   findAnalogousPolities,
 } from './queries.js';
 import { runCounterfactualEstimate } from '../engine/index.js';
+import { validateArgs } from './validation.js';
 
 type ToolArgs = Record<string, unknown>;
 
@@ -40,5 +41,6 @@ export async function handleToolCall(
   if (!handler) {
     throw new Error(`Unknown tool: ${name}`);
   }
+  validateArgs(name, args);
   return handler(args);
 }

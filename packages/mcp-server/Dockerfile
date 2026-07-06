@@ -20,5 +20,6 @@ COPY --from=builder /app/packages/shared/dist ./shared-dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/packages/mcp-server/package.json ./
 
-EXPOSE 3001
+# The server speaks stdio (no network port) — run interactively so an MCP
+# client can attach to stdin/stdout:  docker run -i <image>
 CMD ["node", "dist/index.js"]

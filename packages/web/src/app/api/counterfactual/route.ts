@@ -10,7 +10,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { streamNarrative } from '@/lib/narrative';
-import { projectForward, checkPreconditions, getScenarioById } from '@seshat/shared';
+import {
+  applyChanges,
+  projectForward,
+  checkPreconditions,
+  getScenarioById,
+} from '@seshat/shared';
 import type {
   CenturyState,
   ComplexityScore,
@@ -186,51 +191,3 @@ export async function POST(request: NextRequest) {
   });
 }
 
-function applyChanges(
-  baseline: CenturyState,
-  changes: VariableChange[]
-): Partial<CenturyState> {
-  const mods: Partial<CenturyState> = {};
-
-  for (const change of changes) {
-    switch (change.variable_code) {
-      case 'Iron_weapons': {
-        const hasIron = change.new_value === 'present';
-        const hasCav = baseline.iron_cav >= 1;
-        mods.iron_cav = ((hasIron ? 1 : 0) + (hasCav ? 1 : 0)) as 0 | 1 | 2;
-        if (hasIron) {
-          mods.mil_tech_index = Math.min(1, baseline.mil_tech_index + 1 / 15);
-        }
-        break;
-      }
-      case 'Cavalry': {
-        const hasIron = baseline.iron_cav >= 1;
-        const hasCav = change.new_value === 'present';
-        mods.iron_cav = ((hasIron ? 1 : 0) + (hasCav ? 1 : 0)) as 0 | 1 | 2;
-        if (hasCav) {
-          mods.mil_tech_index = Math.min(
-            1,
-            (mods.mil_tech_index ?? baseline.mil_tech_index) + 1 / 15
-          );
-        }
-        break;
-      }
-      case 'Irrigation': {
-        if (change.new_value === 'present') {
-          mods.agri_productivity = Math.max(baseline.agri_productivity, 1.5);
-        }
-        break;
-      }
-      default: {
-        if (change.new_value === 'present') {
-          mods.mil_tech_index = Math.min(
-            1,
-            (mods.mil_tech_index ?? baseline.mil_tech_index) + 1 / 15
-          );
-        }
-      }
-    }
-  }
-
-  return mods;
-}

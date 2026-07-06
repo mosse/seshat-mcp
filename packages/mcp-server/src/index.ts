@@ -2,12 +2,16 @@
  * Seshat MCP Server — entry point.
  *
  * Exposes the Seshat Global History Databank as a suite of queryable
- * tools for Claude and other MCP-enabled AI assistants. Supports both
- * stdio transport (local/self-hosted) and SSE transport (hosted endpoint).
+ * tools for Claude and other MCP-enabled AI assistants.
  *
- * Usage:
- *   stdio:  node dist/index.js
- *   SSE:    PORT=3001 node dist/index.js --sse
+ * Transport: stdio only — this is a local server, launched by an MCP
+ * client (e.g. Claude Desktop) as a child process:
+ *
+ *   node dist/index.js
+ *
+ * A hosted/HTTP transport is a possible future addition (tracked in
+ * IMPROVEMENT_PLAN.md, Phase 3) but is intentionally NOT implemented or
+ * advertised today.
  */
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
